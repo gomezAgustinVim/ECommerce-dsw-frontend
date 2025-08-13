@@ -1,8 +1,7 @@
-import App from "../App"
+import App from "../App";
 
 export function Carrito() {
   return (
-    <>
     <div>
       <h2>Carrito de Compras</h2>
       <ul>
@@ -10,10 +9,9 @@ export function Carrito() {
         <li>Producto 2</li>
         <li>Producto 3</li>
         <li>
-            <App />
+          <App />
         </li>
       </ul>
     </div>
   );
-  </>
 }
