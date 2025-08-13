@@ -8,7 +8,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist-ssr
 *.local
 
 # Editor directories and files
@@ -46,3 +45,5 @@ Thumbs.db
 
 # ignore built ts files
 dist/**/*
+dist
+dist-ssr
