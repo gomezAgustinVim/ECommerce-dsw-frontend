@@ -46,15 +46,21 @@
 .header-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* Alinea arriba */
-  min-height: 40vh;
-  margin-top: -1rem; /* Elimina margen superior */
+  align-items: center; /* Centrado horizontal */
+  justify-content: flex-start; /* Arriba */
+  min-height: 0;
+  margin-top: 0;
+  padding-top: 2rem; /* Espacio arriba */
+  width: 100vw; /* Ocupa todo el ancho de la pantalla */
+  box-sizing: border-box; /* Incluye el padding en el ancho */
 }
 
 .header-box {
   background: #efeded;
   border-radius: 20px;
+  border-color: #757bec;
+  border-width: 2px;
+  border-style: solid;
   padding: 2rem 3rem;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   display: flex;
