@@ -45,11 +45,13 @@
 
 .header-container {
   position: relative;
-  max-width: 1200px; /* Ancho estándar */
-  margin: 0 auto; /* Centra horizontalmente */
-  padding: 2rem 1rem; /* Espaciado interno */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: -5rem; /* Espacio pequeño arriba */
+  padding-left: 1rem;
+  padding-right: 1rem;
   width: 100%;
-  box-sizing: border-box; /* Incluye el padding en el ancho */
+  box-sizing: border-box;
 }
 
 .header-box {
@@ -63,6 +65,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 0; /* Asegúrate que no tenga margen extra */
 }
 
 .header-box h1 {
