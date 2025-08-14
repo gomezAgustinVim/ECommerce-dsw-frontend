@@ -10,7 +10,7 @@ function App() {
         <p>Este es tu lugar para decorar tu casa</p>
         <input type="button" value="Ingresá acá"></input>
       </body>
-      <h1>Exibidor</h1>
+      <h2>Exibidor</h2>
       <ul>
         <li>
           <strong>Muebles</strong>
