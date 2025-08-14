@@ -58,7 +58,7 @@
 .header-box {
   background: #efeded;
   border-radius: 20px;
-  border-color: #757bec;
+  border-color: #6faee5; /* Igual al color del texto */
   border-width: 2px;
   border-style: solid;
   padding: 2rem 3rem;
