@@ -1,16 +1,28 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Header from "./components/header";
-import Home from "./pages/home";
 
 function App() {
   return (
-    <BrowserRouter>
-    < Header />
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
-    </BrowserRouter>
+    <div className="header-container">
+      <div className="header-box">
+        <h1>Muebles a tu alcance</h1>
+      </div>
+      <div className="top-right-box">
+        <p>Este es tu lugar para decorar tu casa</p>
+        <input type="button" value="Ingresá acá" />
+      </div>
+      <h2>Exibidor</h2>
+      <ul>
+        <li>
+          <strong>Muebles</strong>
+        </li>
+        <li>
+          <strong>Sillones</strong>
+        </li>
+        <li>
+          <strong>Pequeños Muebles</strong>
+        </li>
+      </ul>
+    </div>
   );
 }
 
