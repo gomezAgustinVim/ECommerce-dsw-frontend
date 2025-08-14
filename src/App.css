@@ -44,14 +44,11 @@
 }
 
 .header-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centrado horizontal */
-  justify-content: flex-start; /* Arriba */
-  min-height: 0;
-  margin-top: 0;
-  padding-top: 2rem; /* Espacio arriba */
-  width: 100vw; /* Ocupa todo el ancho de la pantalla */
+  position: relative;
+  max-width: 1200px; /* Ancho estándar */
+  margin: 0 auto; /* Centra horizontalmente */
+  padding: 2rem 1rem; /* Espaciado interno */
+  width: 100%;
   box-sizing: border-box; /* Incluye el padding en el ancho */
 }
 
