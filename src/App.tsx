@@ -15,9 +15,11 @@ function App() {
         <li>
           <strong>Muebles</strong>
         </li>
+
         <li>
           <strong>Sillones</strong>
         </li>
+        
         <li>
           <strong>Pequeños Muebles</strong>
         </li>
