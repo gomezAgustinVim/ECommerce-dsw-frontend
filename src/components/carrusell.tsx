@@ -10,7 +10,7 @@ const images = [
 export default function Carrusell() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // ⏱ Cambiar automáticamente cada 5 segundos
+  //  Cambiar automáticamente cada 5 segundos
   useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
@@ -71,3 +71,4 @@ export default function Carrusell() {
   );
 
 }
+
