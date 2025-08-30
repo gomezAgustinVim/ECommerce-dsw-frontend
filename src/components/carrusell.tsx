@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const images = [
-  "/images/promo1.jpg",
+  "/images/promo1.jpg",  // todavía no seleccioné ninguna
   "/images/promo2.jpg",
   "/images/producto1.jpg",
   "/images/producto2.jpg",
@@ -69,4 +69,5 @@ export default function Carrusell() {
       </div>
     </div>
   );
+
 }
