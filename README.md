@@ -5,3 +5,4 @@ usar:
 - color de fondo de pantalla colour: background-color: #989393
 - color de head 1: color: #535bf2
 - color de head 2: color: #535bf2
+- quise probar agregar una foto de fondo de pantalla 
