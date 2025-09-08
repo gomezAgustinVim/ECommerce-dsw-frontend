@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #989393; /* Cambia #242424 por #ffffff */
+  background-color: #b4b2b2; /* Cambia #242424 por #ffffff */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,15 +32,6 @@ body {
   height: 100vh; /* asegura que ocupe toda la altura de la ventana */
 }
 
-/* esto era lo que te daba problemas, supongo que es lo que venia de tailwind
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-} 
-  */
 
 h1 {
   font-size: 3em;
