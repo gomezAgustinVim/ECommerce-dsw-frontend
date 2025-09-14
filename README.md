@@ -5,4 +5,4 @@ usar:
 - color de fondo de pantalla colour: background-color: #ada8a8ff
 - color de head 1: color: #535bf2
 - color de head 2: color: #535bf2
-- quise probar agregar una foto de fondo de pantalla 
+- API para recopilar datos de una web: fake store API
