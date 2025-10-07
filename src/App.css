@@ -79,3 +79,50 @@
   line-height: 1;
   box-shadow: 0 2px 8px rgba(148, 36, 36, 0.08); 
 }
+
+.full-width-banner {
+  width: 100%;
+  background: rgba(83,91,242,0.12); /* fondo del rectángulo que ocupa todo el ancho */
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0; /* altura del rectángulo */
+  box-sizing: border-box;
+}
+
+.banner-inner {
+  max-width: 1200px;         /* alinea con el ancho estándar de la página */
+  width: calc(100% - 2rem);  /* margen lateral */
+  background: #ffffff;       /* recuadro blanco donde está el título */
+  padding: 10px 20px;        /* espacio dentro del recuadro */
+  border-radius: 12px;       /* esquinas redondeadas */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.banner-inner h1 {
+  margin: 0;
+  color: #535bf2; 
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.banner-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+.btn {
+  background: #535bf2;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn.btn-outline {
+  background: transparent;
+  color: #535bf2;
+  border: 2px solid #535bf2;
+}
