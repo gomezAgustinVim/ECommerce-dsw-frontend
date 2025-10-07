@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const images = [
-  // orden pedido: promo1, promo2, producto1, producto2
+  
   "/imagenes/promo1.png",
   "/imagenes/promo2.png",
   "/imagenes/producto1.png",
@@ -28,7 +28,7 @@ export default function Carrusell() {
       style={{
         position: "relative",
         width: "100%",
-        maxWidth: 900,
+        maxWidth: 500,
         margin: "0 auto",
       }}
     >
@@ -39,7 +39,7 @@ export default function Carrusell() {
           width: "100%",
           height: 420,
           objectFit: "cover",
-          borderRadius: 12,
+          borderRadius: 14,
           display: "block",
         }}
       />
