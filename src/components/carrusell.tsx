@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 const images = [
-  
   "/imagenes/promo1.png",
   "/imagenes/promo2.png",
   "/imagenes/producto1.png",
@@ -23,6 +22,11 @@ export default function Carrusell() {
   const handleNext = () =>
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
 
+  // identifica dinámicamente la imagen "producto2" (evita usar número mágico)
+  const specialIndex = images.findIndex((src) => src.includes("producto2"));
+
+  const isSpecialVisible = currentIndex === specialIndex;
+
   return (
     <div
       style={{
@@ -32,17 +36,23 @@ export default function Carrusell() {
         margin: "0 auto",
       }}
     >
-      <img
-        src={images[currentIndex]}
-        alt={`slide-${currentIndex}`}
-        style={{
-          width: "100%",
-          height: 420,
-          objectFit: "cover",
-          borderRadius: 14,
-          display: "block",
-        }}
-      />
+      <div style={{ overflow: "hidden", borderRadius: 14 }}>
+        <img
+          src={images[currentIndex]}
+          alt={`slide-${currentIndex}`}
+          style={{
+            width: "100%",
+            height: 420,
+            objectFit: "cover",
+            borderRadius: 14,
+            display: "block",
+            transition: "transform 400ms ease, box-shadow 400ms ease",
+            boxShadow: isSpecialVisible
+              ? "0 14px 30px rgba(0,0,0,0.25)"
+              : "0 6px 18px rgba(0,0,0,0.12)",
+          }}
+        />
+      </div>
 
       <button
         onClick={handlePrev}
@@ -102,10 +112,7 @@ export default function Carrusell() {
               height: 10,
               borderRadius: "50%",
               border: "none",
-              background:
-                i === currentIndex
-                  ? "#fff"
-                  : "rgba(255,255,255,0.45)",
+              background: i === currentIndex ? "#fff" : "rgba(255,255,255,0.45)",
               cursor: "pointer",
               padding: 0,
             }}
