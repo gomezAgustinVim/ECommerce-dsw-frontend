@@ -83,15 +83,19 @@ export default function Header() {
                     </ul>
                   )}
                 </li>
+              </ul>
+            )}
+          </li>
 
-                    <li>
-                        <Link to="/contacto">Contacto</Link>
-                    </li>
-                    <li>
-                        <Link to="/carrito">Carrito</Link>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    );
+          {/* Otros enlaces */}
+          <li>
+            <Link to="/contacto" onClick={closeMenus}>Contacto</Link>
+          </li>
+          <li>
+            <Link to="/carrito" onClick={closeMenus}>Carrito</Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
 }
