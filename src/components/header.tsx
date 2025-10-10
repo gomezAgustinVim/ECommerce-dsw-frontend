@@ -84,67 +84,14 @@ export default function Header() {
                   )}
                 </li>
 
-                {/* Living y comedor */}
-                <li
-                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => toggleRoom("living")}
-                >
-                  Living y comedor
-                  {activeRoom === "living" && (
-                    <ul className="mt-2 ml-2 bg-white rounded shadow w-40">
-                      <li className="px-4 py-1 hover:bg-gray-100">
-                        <Link to="/living/mesas" onClick={closeMenus}>
-                          Mesas
-                        </Link>
-                      </li>
-                      <li className="px-4 py-1 hover:bg-gray-100">
-                        <Link to="/living/sillas" onClick={closeMenus}>
-                          Sillas
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-
-                {/* Cocina */}
-                <li
-                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => toggleRoom("cocina")}
-                >
-                  Cocina
-                  {activeRoom === "cocina" && (
-                    <ul className="mt-2 ml-2 bg-white rounded shadow w-40">
-                      <li className="px-4 py-1 hover:bg-gray-100">
-                        <Link to="/cocina/almacenamiento" onClick={closeMenus}>
-                          Almacenamiento
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-
-                {/* Exterior */}
-                <li className="px-4 py-2 hover:bg-gray-200">
-                  <Link to="/exterior" onClick={closeMenus}>
-                    Exterior
-                  </Link>
-                </li>
-
-                {/* Infantiles */}
-                <li className="px-4 py-2 hover:bg-gray-200">
-                  <Link to="/infantiles" onClick={closeMenus}>
-                    Infantiles
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </li>
-
-          <li>
-            <Link to="/contacto" onClick={closeMenus}>Contacto</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  );
+                    <li>
+                        <Link to="/contacto">Contacto</Link>
+                    </li>
+                    <li>
+                        <Link to="/carrito">Carrito</Link>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    );
 }
