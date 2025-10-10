@@ -7,7 +7,7 @@ export type Mueble = {
   imagenes?: string[];
 };
 
-export type LineaPedido = {
+export type Item = {
   id: number;
   cantidad: number;
   subtotal: number;
