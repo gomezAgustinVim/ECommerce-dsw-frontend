@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #b4b2b2; /* Cambia #242424 por #ffffff */
+  background-color: #b4b2b2; 
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,11 +25,11 @@ a:hover {
 body {
   margin: 0;
   padding: 0;
-  background-image: url('/images/sillonPrincipal.png'); /* ruta a tu imagen */
-  background-size: cover;      /* la imagen se ajusta a la pantalla */
-  background-position: center; /* centrada */
-  background-repeat: no-repeat; /* que no se repita */
-  height: 100vh; /* asegura que ocupe toda la altura de la ventana */
+  background-image: url('/images/sillonPrincipal.png');
+  background-size: cover;     
+  background-position: center;
+  background-repeat: no-repeat; 
+  height: 100vh; 
 }
 
 

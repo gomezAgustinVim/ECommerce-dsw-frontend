@@ -87,15 +87,19 @@ export default function Header() {
             )}
           </li>
 
-          {/* Otros enlaces */}
-          <li>
-            <Link to="/contacto" onClick={closeMenus}>Contacto</Link>
-          </li>
-          <li>
-            <Link to="/carrito" onClick={closeMenus}>Carrito</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
-  );
+                    <li>
+                        <Link to="/contacto">Contacto</Link>
+                    </li>
+                    <li>
+                        <Link to="/carrito" className="relative">
+                            🛒
+                            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1">
+                                3
+                            </span>
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    );
 }
