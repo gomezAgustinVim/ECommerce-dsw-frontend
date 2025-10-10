@@ -1,119 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import { type Pedido } from '../types';
-import ItemCarrito from '../components/itemCarrito';
+import { useState } from "react";
 
-const API_URL = 'http://localhost:3000/carrito'; // ajustar
-
-const Carrito: React.FC = () => {
-  const clienteId = 1; // se toma del usuario logueado
-  const [carrito, setCarrito] = useState<Pedido | null>(
-    /*
-    quizá para probar sin backend
-    {
-      id: 101,
-      cliente: { id: 10, nombre: "Santino" },
-      estado: "en carrito",
-      fechaHora: "2025-10-10T12:30:00Z",
-      total: 70000,
-      lineas: [
-        {
-          id: 1,
-          mueble: {
-            id: 1,
-            descripcion: "Silla de madera",
-            precioUnitario: 15000,
-            etiqueta: '',
-            stock: 0
-          },
-          cantidad: 2,
-          subtotal: 30000,
-          estado: "en carrito"
-        },
-        {
-          id: 2,
-          mueble: {
-            id: 2,
-            descripcion: "Mesa ratona",
-            precioUnitario: 40000,
-            etiqueta: '',
-            stock: 0
-          },
-          cantidad: 1,
-          subtotal: 40000,
-          estado: "en carrito"
-        }
-      ]
-    } 
-    */
-  ); /* useState<Pedido | null>(null) */
-  const [loading, setLoading] = useState(true);
-
-  // Cargar carrito
-  useEffect(() => {
-    fetch(`${API_URL}/${clienteId}`)
-      .then(res => res.json())
-      .then(data => setCarrito(data))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // funciones para el carrito
-  const actualizarCantidad = async (lineaId: number, cantidad: number) => {
-    if (!carrito) return;
-    const res = await fetch(`${API_URL}/linea/${lineaId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cantidad }),
-    });
-    const actualizado = await res.json();
-    setCarrito(actualizado);
-  };
-
-  const eliminarLinea = async (lineaId: number) => {
-    const res = await fetch(`${API_URL}/linea/${lineaId}`, { method: 'DELETE' });
-    const actualizado = await res.json();
-    setCarrito(actualizado);
-  };
-
-  const confirmarPedido = async () => {
-    if (!carrito) return;
-    const res = await fetch(`${API_URL}/${carrito.id}/confirmar`, { method: 'POST' });
-    const confirmado = await res.json();
-    alert('✅ Pedido confirmado');
-    setCarrito(confirmado);
-  };
-
-  // Renderizado
-  if (loading) return <p>Cargando carrito...</p>;
-  if (!carrito) return <p>No hay carrito activo.</p>;
-
-  return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">🛒 Tu carrito</h2>
-
-      {carrito.lineas.map((linea) => (
-        <ItemCarrito
-          key={linea.id}
-          linea={linea}
-          onUpdateCantidad={actualizarCantidad}
-          onRemove={eliminarLinea}
-        />
-      ))}
-
-      <div className="flex justify-between items-center mt-8 border-t pt-4">
-        <h3 className="text-xl font-semibold">Total:</h3>
-        <span className="text-2xl font-bold text-green-700">${carrito.total.toLocaleString()}</span>
-      </div>
-
-      <div className="mt-6 text-right">
-        <button
-          disabled={carrito.lineas.length === 0}
-          onClick={confirmarPedido}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          Confirmar pedido
-        </button>
-      </div>
-    </div>
-  );
+type CartItem = {
+    id: string;
+    title: string;
+    price: number;
+    quantity: number;
+    image?: string;
 };
-export default Carrito;
+
+export default function Carrito() {
+    const [items, setItems] = useState<CartItem[]>([
+        { id: "p1", title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
+        { id: "p2", title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
+    ]);
+
+    const updateQty = (id: string, qty: number) =>
+        setItems((prev) => prev.map(i => i.id === id ? { ...i, quantity: Math.max(1, qty) } : i));
+
+    const removeItem = (id: string) => setItems((prev) => prev.filter(i => i.id !== id));
+
+    const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
+    const shipping = subtotal > 0 ? 150 : 0;
+    const total = subtotal + shipping;
+
+    return (
+        <article>
+            <h2 className="text-3xl font-bold mb-4">Carrito de Compras</h2>
+
+            <ul>
+                {items.map(item => (
+                    <li key={item.id} style={{ display: "flex", gap: 12, alignItems: "center", padding: 12, borderRadius: 8, background: "#fff", marginBottom: 8 }}>
+                        <img src={item.image} alt={item.title} style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 6 }} />
+                        <div style={{ flex: 1 }}>
+                            <div style={{ fontWeight: 700 }}>{item.title}</div>
+                            <div style={{ color: "#666" }}>${item.price.toFixed(2)}</div>
+                        </div>
+
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <span style={{ marginRight: 6 }}>Cantidad:</span>
+                            <input
+                                type="number"
+                                value={item.quantity}
+                                min={1}
+                                onChange={(e) => updateQty(item.id, Number(e.target.value))}
+                                style={{
+                                    width: 64,
+                                    padding: 6,
+                                    borderRadius: 6,
+                                    border: "1px solid #060000ff",
+                                    color: "#000000",
+                                    background: "#ffffff"
+                                }}
+                            />
+                            <div style={{ width: 100, textAlign: "right", fontWeight: 700 }}>${(item.price * item.quantity).toFixed(2)}</div>
+                            <button onClick={() => removeItem(item.id)} style={{ marginLeft: 12 }}>Eliminar</button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+
+            <div style={{ marginTop: 16, textAlign: "right" }}>
+                <div>Subtotal: ${subtotal.toFixed(2)}</div>
+                <div>Envío: ${shipping.toFixed(2)}</div>
+                <div style={{ fontWeight: 800, marginTop: 8 }}>Total: ${total.toFixed(2)}</div>
+                <div style={{ marginTop: 12 }}>
+                    <button style={{ padding: "8px 14px", borderRadius: 8, marginRight: 8 }}>Continuar comprando</button>
+                    <button style={{ padding: "8px 14px", borderRadius: 8, background: "#535bf2", color: "#fff", border: "none" }}>Finalizar compra</button>
+                </div>
+            </div>
+        </article>
+    );
+}

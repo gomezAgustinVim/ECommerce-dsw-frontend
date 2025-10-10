@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/header';
 import Home from './pages/home';
 import Carrito from './pages/carrito'; // <-- importar el componente
+import ItemCarrito from './components/itemCarrito';
 
 function App() {
     return (
