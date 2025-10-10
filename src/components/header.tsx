@@ -70,6 +70,9 @@ export default function Header() {
                     <li>
                         <Link to="/contacto">Contacto</Link>
                     </li>
+                    <li>
+                        <Link to="/carrito">Carrito</Link>
+                    </li>
                 </ul>
             </nav>
         </header>
