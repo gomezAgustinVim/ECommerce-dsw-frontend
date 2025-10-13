@@ -7,7 +7,7 @@ export default function Home() {
       {/* Botón en esquina superior derecha */}
       <Link
         to="/login"
-        className="absolute top-4 right-4 bg-white text-black px-6 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-300 hover:border-blue-400 hover:ring-2 hover:ring-blue-200"
+        className="absolute top-4 right-4 bg-white text-[#32368b]! px-6 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-300 hover:border-[#32368b]"
       >
         Iniciar sesión
       </Link>
@@ -19,4 +19,4 @@ export default function Home() {
       <Carrusell />
     </div>
   );
-}
+} 
