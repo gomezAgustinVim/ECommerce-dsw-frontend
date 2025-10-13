@@ -22,10 +22,15 @@ export default function Header() {
 
   return (
     <header className="bg-gray-800 text-white shadow-md relative z-50">
-      <nav className="flex items-center justify-between px-6 py-4">
+      <nav className="flex items-center justify-between px-6 py-3">
+        
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold">
-          Muebles a tu alcance
+        <Link to="/" className="flex items-center gap-3">
+          <img 
+            src="/imagenes/logomueble.png" 
+            alt="muebles logo"
+            className="h-14 w-auto" 
+          />
         </Link>
 
         {/* Barra de búsqueda */}
@@ -48,21 +53,26 @@ export default function Header() {
         {/* Menú principal */}
         <ul className="flex gap-6 items-center relative">
           <li>
-            <Link to="/" onClick={closeMenus}>Inicio</Link>
+            <Link
+              to="/"
+              onClick={closeMenus}
+              className="text-white hover:opacity-80 transition"
+            >
+              Inicio
+            </Link>
           </li>
 
           {/* Menú desplegable de productos */}
           <li className="relative">
             <button
               onClick={() => setOpen((prev) => !prev)}
-              className="hover:text-gray-300"
+              className="text-white hover:opacity-80 transition"
             >
               Productos ▼
             </button>
 
             {open && (
               <ul className="absolute left-0 mt-2 bg-white text-gray-800 rounded-lg shadow-lg w-48 z-20">
-                {/* Dormitorio */}
                 <li
                   className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                   onClick={() => toggleRoom("dormitorio")}
@@ -87,19 +97,29 @@ export default function Header() {
             )}
           </li>
 
-                    <li>
-                        <Link to="/contacto">Contacto</Link>
-                    </li>
-                    <li>
-                        <Link to="/carrito" className="relative">
-                            🛒
-                            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1">
-                                3
-                            </span>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    );
+          {/* Otros enlaces */}
+          <li>
+            <Link
+              to="/contacto"
+              onClick={closeMenus}
+              className="text-white hover:opacity-80 transition"
+            >
+              Contacto
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/carrito"
+              className="relative text-white hover:opacity-80 transition"
+            >
+              🛒
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1">
+                3
+              </span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
 }
