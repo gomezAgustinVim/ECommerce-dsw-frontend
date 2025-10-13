@@ -95,6 +95,7 @@
   background: #ffffff;       /* recuadro blanco donde está el título */
   padding: 10px 20px;        /* espacio dentro del recuadro */
   border-radius: 12px;       /* esquinas redondeadas */
+  border-color: aquamarine;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   text-align: center;
   display: flex;
