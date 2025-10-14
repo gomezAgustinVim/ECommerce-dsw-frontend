@@ -46,7 +46,7 @@ export default function Header() {
             type="submit"
             className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-r text-white"
           >
-            🔍
+            ⌕
           </button>
         </form>
 
@@ -59,7 +59,7 @@ export default function Header() {
               className="text-white hover:opacity-80 transition"
             >
               Inicio
-            </Link>
+            </Link> 
           </li>
 
           {/* Menú desplegable de productos */}

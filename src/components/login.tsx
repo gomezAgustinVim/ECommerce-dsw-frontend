@@ -1,24 +1,49 @@
 import React, { useState } from "react";
 
 const Login = () => {
-  const [isRegister, setIsRegister] = useState(false); // controla si estamos en modo login o registro
+  const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isRegister) {
-      // modo registro
-      if (password !== confirmPassword) {
-        alert("Las contraseñas no coinciden");
+    setError("");
+    setLoading(true);
+
+    // simlula un loading cuando se registra o loguea para ver como queda
+    setTimeout(() => {
+      // validaciones 
+      if (!email || !password) {
+        setError("Todos los campos son obligatorios");
+        setLoading(false);
         return;
       }
-      console.log("Registrando usuario con:", { email, password });
-    } else {
-      // modo login
-      console.log("Iniciando sesión con:", { email, password });
-    }
+
+      if (isRegister) {
+        if (password !== confirmPassword) {
+          setError("Las contraseñas no coinciden");
+          setLoading(false);
+          return;
+        }
+        if (password.length < 6) {
+          setError("La contraseña debe tener al menos 6 caracteres");
+          setLoading(false);
+          return;
+        }
+        
+        console.log("Registro exitoso:", { email, password });
+        alert("¡Registro exitoso!");
+        setIsRegister(false); // cambia a login despues del registro
+      } else {
+        console.log("Login exitoso:", { email, password });
+        alert("¡Inicio de sesión exitoso!");
+      }
+      
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -31,7 +56,14 @@ const Login = () => {
           {isRegister ? "Registrarse" : "Iniciar sesión"}
         </h2>
 
-        {/* Email */}
+        {/* muestra error */}        
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        {/* mail */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Correo electrónico
@@ -43,10 +75,11 @@ const Login = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
             placeholder="ejemplo@correo.com"
             required
+            disabled={loading}
           />
         </div>
 
-        {/* Password */}
+        {/* password */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Contraseña
@@ -58,10 +91,11 @@ const Login = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
             placeholder="Ingresa tu contraseña"
             required
+            disabled={loading}
           />
         </div>
 
-        {/* Confirmar contraseña solo si es registro */}
+        {/* confirmar contraseña en modo registro */}
         {isRegister && (
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -74,25 +108,35 @@ const Login = () => {
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
               placeholder="Repite tu contraseña"
               required
+              disabled={loading}
             />
           </div>
         )}
 
-        {/* Botón principal */}
+        {/* botón */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-200"
+          disabled={loading}
+          className={`w-full py-3 rounded-lg transition duration-200 ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600"
+          } text-white`}
         >
-          {isRegister ? "Registrarse" : "Entrar"}
+          {loading ? "Cargando..." : isRegister ? "Registrarse" : "Entrar"}
         </button>
 
-        {/* Enlace para cambiar modo */}
+        {/* enlace para cambiar modo */}
         <p className={`text-sm text-center text-gray-600 ${isRegister ? 'mt-8' : 'mt-4'}`}>
           {isRegister ? "¿Ya tenés una cuenta?" : "¿No tenés cuenta?"}{" "}
           <button
             type="button"
-            onClick={() => setIsRegister(!isRegister)}
-            className="text-white hover:underline font-medium ml-1 bg-blue-500 px-2 py-1 rounded-lg hover:bg-blue-600 transition duration-200"
+            onClick={() => {
+              setIsRegister(!isRegister);
+              setError("");
+            }}
+            disabled={loading}
+            className="text-blue-600 hover:underline font-medium ml-1"
           >
             {isRegister ? "Iniciar sesión" : "Registrate"}
           </button>
