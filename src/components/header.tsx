@@ -93,6 +93,18 @@ export default function Header() {
                     </ul>
                   )}
                 </li>
+
+                <li className="px-4 py-2 hover:bg-gray-200">
+                  <a href="/sillas" target="_blank" rel="noopener noreferrer" className="text-gray-800">
+                    Sillas / Sillones
+                  </a>
+                </li>
+
+                <li className="px-4 py-2 hover:bg-gray-200">
+                  <a href="/mesa" target="_blank" rel="noopener noreferrer" className="text-gray-800">
+                    Mesa
+                  </a>
+                </li>
               </ul>
             )}
           </li>

@@ -4,6 +4,8 @@ import Header from './components/header';
 import Home from './pages/home';
 import Carrito from './pages/carrito'; // <-- importar el componente
 import Login from './components/login';
+import Sillas from './pages/sillas';
+import Mesa from './pages/mesa';
 import { type Cliente } from './types';
 import { useEffect, useState } from "react";
 function App() {
@@ -26,6 +28,8 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/carrito" element={<Carrito />} /> {/* <-- ruta para el carrito */}
                 <Route path="/login" element={<Login />} />
+                <Route path="/sillas" element={<Sillas />} />
+                <Route path="/mesa" element={<Mesa />} />
             </Routes>
 
             <h1>Clientes</h1>
