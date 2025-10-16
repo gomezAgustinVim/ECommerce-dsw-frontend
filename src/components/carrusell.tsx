@@ -62,9 +62,9 @@ export default function Carrusell() {
   const isSpecialVisible = currentIndex === specialIndex;
 
   return (
-    <div className="relative w-full max-w-4xl mx-auto">
+    <div className="relative w-full">
       {/* contenedor general del carrusel */}
-      <div className="relative overflow-hidden rounded-xl shadow-xl bg-gradient-to-br from-gray-50 to-gray-100 p-2">
+      <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
         
         {/* contenedor de la imagen principal */}
         <div className="relative">
@@ -72,7 +72,7 @@ export default function Carrusell() {
             src={images[currentIndex]} // muestra la imagen actual
             alt={`Promoción ${currentIndex + 1}`} // texto alternativo
             className={`
-              w-full h-96 object-cover rounded-lg
+              w-full h-[500px] object-cover
               transform transition-all duration-500
               ${isTransitioning ? 'opacity-80 scale-105' : 'opacity-100 scale-100'}
               ${isSpecialVisible ? 'shadow-xl ring-2 ring-yellow-400 ring-opacity-50' : 'shadow-md'}
