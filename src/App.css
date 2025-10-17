@@ -72,7 +72,7 @@
 .promo-badge {
   display: inline-block;
   background: #ffffff;           
-  color: #535bf2;                
+  color: #32368b;                
   padding: 12px 80px;             
   border-radius: 12px;           
   font-weight: 700;
@@ -82,19 +82,19 @@
 
 .full-width-banner {
   width: 100%;
-  background: #32368b1f; /* fondo del rectángulo que ocupa todo el ancho */
+  background: #348b321f; 
   display: flex;
   justify-content: center;
-  padding: 1rem 0; /* altura del rectángulo */
+  padding: 1rem 0; 
   box-sizing: border-box;
 }
 
 .banner-inner {
-  max-width: 1200px;         /* alinea con el ancho estándar de la página */
-  width: calc(100% - 2rem);  /* margen lateral */
-  background: #ffffff;       /* recuadro blanco donde está el título */
-  padding: 10px 20px;        /* espacio dentro del recuadro */
-  border-radius: 12px;       /* esquinas redondeadas */
+  max-width: 1200px; 
+  width: calc(100% - 2rem);  
+  background: #ffffff;
+  padding: 10px 20px;        
+  border-radius: 12px;       
   border-color: aquamarine;
   box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   text-align: center;

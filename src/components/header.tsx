@@ -21,42 +21,42 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-800 text-white shadow-md relative z-50">
+    <header className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-lg z-50">
       <nav className="flex items-center justify-between px-6 py-3">
         
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
+        {/* Logo - EXTREMA IZQUIERDA */}
+        <Link to="/" className="flex items-center gap-3" onClick={closeMenus}>
           <img 
             src="/imagenes/logomueble.png" 
-            alt="muebles logo"
-            className="h-14 w-auto" 
+            alt="Muebles Logo"
+            className="h-12 w-auto hover:opacity-90 transition-opacity" 
           />
         </Link>
 
-        {/* Barra de búsqueda */}
-        <form onSubmit={handleSearch} className="flex items-center w-1/3">
+        {/* Barra de búsqueda - CENTRO */}
+        <form onSubmit={handleSearch} className="flex items-center w-1/3 mx-8">
           <input
             type="text"
             placeholder="Buscar productos..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="bg-gray-200 text-black border border-gray-400 rounded-l px-3 py-2 w-full"
+            className="bg-white text-gray-800 border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-r text-white"
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg text-white transition-colors duration-200"
           >
-            ⌕
+            🔍
           </button>
         </form>
 
-        {/* Menú principal */}
-        <ul className="flex gap-6 items-center relative">
+        {/* Menú principal - EXTREMA DERECHA */}
+        <ul className="flex gap-8 items-center">
           <li>
             <Link
               to="/"
               onClick={closeMenus}
-              className="text-white hover:opacity-80 transition"
+              className="text-white hover:text-blue-300 transition-colors duration-200 font-medium"
             >
               Inicio
             </Link> 
@@ -65,67 +65,90 @@ export default function Header() {
           {/* Menú desplegable de productos */}
           <li className="relative">
             <button
-              onClick={() => setOpen((prev) => !prev)}
-              className="text-white hover:opacity-80 transition"
+              onClick={() => setOpen(!open)}
+              onMouseEnter={() => setOpen(true)}
+              className="text-white hover:text-blue-300 transition-colors duration-200 font-medium flex items-center gap-1"
             >
-              Productos ▼
+              Productos 
+              <span className={`transform transition-transform ${open ? 'rotate-180' : ''}`}>
+                ▼
+              </span>
             </button>
 
             {open && (
-              <ul className="absolute left-0 mt-2 bg-white text-gray-800 rounded-lg shadow-lg w-48 z-20">
-                <li
-                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => toggleRoom("dormitorio")}
-                >
-                  Dormitorio
-                  {activeRoom === "dormitorio" && (
-                    <ul className="mt-2 ml-2 bg-white rounded shadow w-40">
-                      <li className="px-4 py-1 hover:bg-gray-100">
-                        <Link to="/dormitorio/camas" onClick={closeMenus}>
+              <div 
+                className="absolute left-0 mt-2 bg-white text-gray-800 rounded-lg shadow-xl border border-gray-200 w-56 z-20"
+                onMouseLeave={() => setOpen(false)}
+              >
+                <div className="p-2">
+                  <div
+                    className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-colors"
+                    onClick={() => toggleRoom("dormitorio")}
+                  >
+                    <div className="flex justify-between items-center">
+                      <span>Dormitorio</span>
+                      <span className="text-xs">▶</span>
+                    </div>
+                    {activeRoom === "dormitorio" && (
+                      <div className="mt-2 ml-2 bg-gray-50 rounded-md p-2 border border-gray-200">
+                        <Link 
+                          to="/dormitorio/camas" 
+                          onClick={closeMenus}
+                          className="block px-2 py-1 hover:bg-gray-200 rounded text-sm transition-colors"
+                        >
                           Camas
                         </Link>
-                      </li>
-                      <li className="px-4 py-1 hover:bg-gray-100">
-                        <Link to="/dormitorio/placares" onClick={closeMenus}>
+                        <Link 
+                          to="/dormitorio/placares" 
+                          onClick={closeMenus}
+                          className="block px-2 py-1 hover:bg-gray-200 rounded text-sm transition-colors mt-1"
+                        >
                           Placares
                         </Link>
-                      </li>
-                    </ul>
-                  )}
-                </li>
+                      </div>
+                    )}
+                  </div>
 
-                <li className="px-4 py-2 hover:bg-gray-200">
-                  <a href="/sillas" target="_blank" rel="noopener noreferrer" className="text-gray-800">
+                  <Link 
+                    to="/sillas" 
+                    className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                    onClick={closeMenus}
+                  >
                     Sillas / Sillones
-                  </a>
-                </li>
+                  </Link>
 
-                <li className="px-4 py-2 hover:bg-gray-200">
-                  <a href="/mesa" target="_blank" rel="noopener noreferrer" className="text-gray-800">
-                    Mesa
-                  </a>
-                </li>
-              </ul>
+                  <Link 
+                    to="/mesas" 
+                    className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                    onClick={closeMenus}
+                  >
+                    Mesas
+                  </Link>
+                </div>
+              </div>
             )}
           </li>
 
-          {/* Otros enlaces */}
+          {/* Contacto */}
           <li>
             <Link
               to="/contacto"
               onClick={closeMenus}
-              className="text-white hover:opacity-80 transition"
+              className="text-white hover:text-blue-300 transition-colors duration-200 font-medium"
             >
               Contacto
             </Link>
           </li>
+
+          {/* Carrito */}
           <li>
             <Link
               to="/carrito"
-              className="relative text-white hover:opacity-80 transition"
+              onClick={closeMenus}
+              className="relative text-white hover:text-blue-300 transition-colors duration-200 text-xl p-2"
             >
               🛒
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                 3
               </span>
             </Link>
