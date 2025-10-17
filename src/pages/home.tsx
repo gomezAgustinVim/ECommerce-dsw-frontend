@@ -1,23 +1,27 @@
-
 import { Link } from "react-router-dom";
 import Carrusell from "../components/carrusell"; 
+import ProductosDestacados from "../components/productoshome";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center relative">
+    <div className="flex flex-col items-center relative pt-20"> {/* le puse pt-20 para el header fijo */}
       {/* Botón en esquina superior derecha */}
       <Link
         to="/login"
-        className="absolute top-4 right-4 bg-white text-[#32368b]! px-6 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-300 hover:border-[#32368b]"
+        className="fixed top-24 right-4 bg-white text-[#32368b]! px-6 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-md hover:shadow-lg border border-gray-300 hover:border-[#32368b] z-40"
       >
         Iniciar sesión
       </Link>
 
-      <h1 className="text-2xl font-bold text-center my-4">
-        <span className="promo-badge">Promociones</span>
-      </h1>
+      {/* Carrusel */}
+      <div className="w-full">
+        <Carrusell />
+      </div>
 
-      <Carrusell />
+      {/* Productos Destacados */}
+      <div className="w-full">
+        <ProductosDestacados />
+      </div>
     </div>
   );
-} 
+}
