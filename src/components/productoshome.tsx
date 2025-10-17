@@ -70,14 +70,15 @@ export default function ProductosDestacados() {
   };
 
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="">
+      <div className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Título de la sección */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Productos Destacados
+        <div className="text-center mb-12 ">
+          <h2 className="text-3xl font-bold text-[#32368b]! mb-4">
+            PRODUCTOS<br />
+            <span className="text-[#32368b]!">DESTACADOS</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-[#32368b]! max-w-2xl mx-auto">
             acá tendríamos que poner una descripcion.
           </p>
         </div>
@@ -127,7 +128,7 @@ export default function ProductosDestacados() {
                   </button>
                   <Link
                     to={`/producto/${producto.id}`}
-                    className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
+                    className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-[#32368b]! py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                   >
                     Ver más
                   </Link>

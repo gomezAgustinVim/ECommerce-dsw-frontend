@@ -126,10 +126,10 @@ export default function Carrusell() {
         </div>
       </div>
 
-      {/* descripción fotos */}
+      {/* descripción fotos
       <div className="mt-4 text-center">
         <h3 className="text-lg font-semibold text-gray-800">
-          {/* texxto producto destacado */}
+          // texxto producto destacado // 
           {isSpecialVisible ? "Producto Destacado" : `Promoción ${currentIndex + 1}`}
         </h3>
         <p className="text-sm text-gray-600 mt-1">
@@ -138,6 +138,7 @@ export default function Carrusell() {
             : "Descubrí nuestras mejores ofertas"}
         </p>
       </div>
+      */} 
     </div>
   );
 }
