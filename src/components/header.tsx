@@ -24,7 +24,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow-lg z-50">
       <nav className="flex items-center justify-between px-6 py-3">
         
-        {/* Logo - EXTREMA IZQUIERDA */}
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-3" onClick={closeMenus}>
           <img 
             src="/imagenes/logomueble.png" 
@@ -33,7 +33,7 @@ export default function Header() {
           />
         </Link>
 
-        {/* Barra de búsqueda - CENTRO */}
+        {/* Barra de búsqueda */}
         <form onSubmit={handleSearch} className="flex items-center w-1/3 mx-8">
           <input
             type="text"
@@ -50,7 +50,7 @@ export default function Header() {
           </button>
         </form>
 
-        {/* Menú principal - EXTREMA DERECHA */}
+        {/* Menú principal */}
         <ul className="flex gap-8 items-center">
           <li>
             <Link
@@ -86,22 +86,22 @@ export default function Header() {
                     onClick={() => toggleRoom("dormitorio")}
                   >
                     <div className="flex justify-between items-center">
-                      <span>Dormitorio</span>
+                      <span className="font-semibold">Dormitorio</span>
                       <span className="text-xs">▶</span>
                     </div>
                     {activeRoom === "dormitorio" && (
-                      <div className="mt-2 ml-2 bg-gray-50 rounded-md p-2 border border-gray-200">
+                      <div className="block px-3 py-2 hover:bg-gray-100! rounded-md transition-colors">
                         <Link 
                           to="/dormitorio/camas" 
                           onClick={closeMenus}
-                          className="block px-2 py-1 hover:bg-gray-200 rounded text-sm transition-colors"
+                          className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
                         >
                           Camas
                         </Link>
                         <Link 
                           to="/dormitorio/placares" 
                           onClick={closeMenus}
-                          className="block px-2 py-1 hover:bg-gray-200 rounded text-sm transition-colors mt-1"
+                          className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
                         >
                           Placares
                         </Link>
@@ -111,7 +111,7 @@ export default function Header() {
 
                   <Link 
                     to="/sillas" 
-                    className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors"
                     onClick={closeMenus}
                   >
                     Sillas / Sillones
@@ -148,6 +148,7 @@ export default function Header() {
               className="relative text-white hover:text-blue-300 transition-colors duration-200 text-xl p-2"
             >
               🛒
+              {/* numero arriba del carrito */}
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                 3
               </span>
