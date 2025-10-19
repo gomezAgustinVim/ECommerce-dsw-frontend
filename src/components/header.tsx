@@ -1,12 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom"; //uso de useNavigate porque se recomienda en react
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [activeRoom, setActiveRoom] = useState<string | null>(null);
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+    const handleProductsClick = () => {
+    // te lleva a /productos 
+    navigate ('/productos');
+    closeMenus();
+  };
+
+  const handleProductsHover = () => {
+    // abre el menu cuando pasa el mouse
+    setOpen(true);
+  };
+
 
   const handleSearch = (e: React.FormEvent) => {
+    // evita que la pag se recargue
     e.preventDefault();
     console.log("Buscando:", query);
   };
@@ -65,8 +79,8 @@ export default function Header() {
           {/* Menú desplegable de productos */}
           <li className="relative">
             <button
-              onClick={() => setOpen(!open)}
-              onMouseEnter={() => setOpen(true)}
+              onClick={handleProductsClick} // ahora te lleva a /productos 
+              onMouseEnter={handleProductsHover}
               className="text-white hover:text-blue-300 transition-colors duration-200 font-medium flex items-center gap-1"
             >
               Productos 
@@ -83,14 +97,14 @@ export default function Header() {
                 <div className="p-2">
                   <div
                     className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-colors"
-                    onClick={() => toggleRoom("dormitorio")}
+                    onClick={() => toggleRoom("dormitorio")}   
                   >
                     <div className="flex justify-between items-center">
                       <span className="font-semibold">Dormitorio</span>
                       <span className="text-xs">▶</span>
                     </div>
                     {activeRoom === "dormitorio" && (
-                      <div className="block px-3 py-2 hover:bg-gray-100! rounded-md transition-colors">
+                      <div className="block px-3 py-2 hover:bg-gray-100! rounded-md transition-colors"> 
                         <Link 
                           to="/dormitorio/camas" 
                           onClick={closeMenus}
