@@ -9,10 +9,11 @@ import Mesa from './pages/mesa';
 import { type Cliente } from './types';
 import { useEffect, useState } from "react";
 function App() {
+    const api_url = "http://localhost:3000/api/"
     const [clientes, setClientes] = useState<Cliente[]>([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/clientes") // 👈 URL del backend
+        fetch(`${api_url}/clientes`) // 👈 URL del backend
             .then((res) => res.json())
             .then((json) => {
                 console.log(json); // <- verificás qué llega
