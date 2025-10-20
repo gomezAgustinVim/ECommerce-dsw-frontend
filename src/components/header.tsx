@@ -125,37 +125,7 @@ export default function Header() {
                     Almacenamiento
                   </Link>
 
-                  <Link 
-                    to="/iluminacion" 
-                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
-                    onClick={closeMenus}
-                  >
-                    Iluminación
-                  </Link>
 
-                  <Link 
-                    to="/oficina" 
-                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
-                    onClick={closeMenus}
-                  >
-                    Oficina
-                  </Link>
-
-                  <Link 
-                    to="/exterior" 
-                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
-                    onClick={closeMenus}
-                  >
-                    Exterior
-                  </Link>
-
-                  <Link 
-                    to="/infantil" 
-                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
-                    onClick={closeMenus}
-                  >
-                    Infantil
-                  </Link>
                 </div>
               </div>
             )}
