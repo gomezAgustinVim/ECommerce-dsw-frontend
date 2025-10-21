@@ -1,37 +1,27 @@
 import { useState } from "react";
-import { Link, useNavigate} from "react-router-dom"; //uso de useNavigate porque se recomienda en react
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [activeRoom, setActiveRoom] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
-    const handleProductsClick = () => {
-    // te lleva a /productos 
-    navigate ('/productos');
+  const handleMueblesClick = () => {
+    navigate('/muebles');
     closeMenus();
   };
 
-  const handleProductsHover = () => {
-    // abre el menu cuando pasa el mouse
+  const handleMueblesHover = () => {
     setOpen(true);
   };
 
-
   const handleSearch = (e: React.FormEvent) => {
-    // evita que la pag se recargue
     e.preventDefault();
     console.log("Buscando:", query);
   };
 
-  const toggleRoom = (room: string) => {
-    setActiveRoom((prev) => (prev === room ? null : room));
-  };
-
   const closeMenus = () => {
     setOpen(false);
-    setActiveRoom(null);
   };
 
   return (
@@ -51,7 +41,7 @@ export default function Header() {
         <form onSubmit={handleSearch} className="flex items-center w-1/3 mx-8">
           <input
             type="text"
-            placeholder="Buscar productos..."
+            placeholder="Buscar muebles..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="bg-white text-gray-800 border border-gray-300 rounded-l-lg px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -76,14 +66,14 @@ export default function Header() {
             </Link> 
           </li>
 
-          {/* Menú desplegable de productos */}
+          {/* Menú desplegable de muebles */}
           <li className="relative">
             <button
-              onClick={handleProductsClick} // ahora te lleva a /productos 
-              onMouseEnter={handleProductsHover}
+              onClick={handleMueblesClick}
+              onMouseEnter={handleMueblesHover}
               className="text-white hover:text-blue-300 transition-colors duration-200 font-medium flex items-center gap-1"
             >
-              Productos 
+              Productos
               <span className={`transform transition-transform ${open ? 'rotate-180' : ''}`}>
                 ▼
               </span>
@@ -95,49 +85,47 @@ export default function Header() {
                 onMouseLeave={() => setOpen(false)}
               >
                 <div className="p-2">
-                  <div
-                    className="px-3 py-2 hover:bg-gray-100 rounded-md cursor-pointer transition-colors"
-                    onClick={() => toggleRoom("dormitorio")}   
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold">Dormitorio</span>
-                      <span className="text-xs">▶</span>
-                    </div>
-                    {activeRoom === "dormitorio" && (
-                      <div className="block px-3 py-2 hover:bg-gray-100! rounded-md transition-colors"> 
-                        <Link 
-                          to="/dormitorio/camas" 
-                          onClick={closeMenus}
-                          className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
-                        >
-                          Camas
-                        </Link>
-                        <Link 
-                          to="/dormitorio/placares" 
-                          onClick={closeMenus}
-                          className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
-                        >
-                          Placares
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-
                   <Link 
                     to="/sillas" 
-                    className="block px-3 py-2 hover:bg-gray-100 transition-colors"
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
                     onClick={closeMenus}
                   >
-                    Sillas / Sillones
+                    Sillas
+                  </Link>
+
+                  <Link 
+                    to="/sofas" 
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
+                    onClick={closeMenus}
+                  >
+                    Sofás
                   </Link>
 
                   <Link 
                     to="/mesas" 
-                    className="block px-3 py-2 hover:bg-gray-100 rounded-md transition-colors"
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
                     onClick={closeMenus}
                   >
                     Mesas
                   </Link>
+
+                  <Link 
+                    to="/camas" 
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
+                    onClick={closeMenus}
+                  >
+                    Camas
+                  </Link>
+
+                  <Link 
+                    to="/almacenamiento" 
+                    className="block px-3 py-2 hover:bg-gray-100 transition-colors rounded-md"
+                    onClick={closeMenus}
+                  >
+                    Almacenamiento
+                  </Link>
+
+
                 </div>
               </div>
             )}
@@ -162,7 +150,6 @@ export default function Header() {
               className="relative text-white hover:text-blue-300 transition-colors duration-200 text-xl p-2"
             >
               🛒
-              {/* numero arriba del carrito */}
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                 3
               </span>
@@ -172,4 +159,4 @@ export default function Header() {
       </nav>
     </header>
   );
-}
+} 

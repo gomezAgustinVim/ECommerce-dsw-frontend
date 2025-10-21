@@ -1,64 +1,85 @@
 import { Link } from "react-router-dom";
 
-interface Producto {
+interface Mueble {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: number;
-  imagen: string;
-  categoria: string;
+  precioUnitario: number;
+  imagenes: string[];
+  etiqueta: string;
+  stock: number;
+  categoria: number;
+  material: number;
 }
 
-export default function ProductosDestacados() {
+export default function MueblesDestacados() {
   // ejemplos
-  const productosDestacados: Producto[] = [
+  const mueblesDestacados: Mueble[] = [
     {
       id: 1,
-      nombre: "Sillón Moderno",
-      descripcion: "Sillón ",
-      precio: 125000,
-      imagen: "/imagenes/sillon-moderno.jpg",
-      categoria: "Sillones"
+      nombre: "Sofá de cuero sintético",
+      descripcion: "Sofá de dos cuerpos tapizado en cuero sintético gris oscuro.",
+      precioUnitario: 142000,
+      imagenes: ["https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?w=800"],
+      etiqueta: "Sofás",
+      stock: 5,
+      categoria: 3,
+      material: 8
     },
     {
       id: 2,
-      nombre: "Mesa de Roble",
-      descripcion: "Mesa",
-      precio: 89000,
-      imagen: "/imagenes/mesa-roble.jpg",
-      categoria: "Mesas"
+      nombre: "Biblioteca modular de madera",
+      descripcion: "Biblioteca modular adaptable a distintos espacios, con compartimentos abiertos.",
+      precioUnitario: 74000,
+      imagenes: ["https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800"],
+      etiqueta: "Mesas",
+      stock: 8,
+      categoria: 2,
+      material: 1
     },
     {
       id: 3,
-      nombre: "Cama ",
-      descripcion: "Cama",
-      precio: 156000,
-      imagen: "/imagenes/cama-king.jpg",
-      categoria: "Dormitorio"
+      nombre: "Lampara de pie alta ",
+      descripcion: "Lámpara de pie alta, con base metálica y pantalla de tela",
+      precioUnitario: 27000,
+      imagenes: ["https://images.unsplash.com/photo-1616628182506-8a9621a5d3b0?w=800"],
+      etiqueta: "Iluminación",
+      stock: 6,
+      categoria: 8,
+      material: 4
     },
     {
       id: 4,
-      nombre: "Placar Moderno",
-      descripcion: "Placar ",
-      precio: 112000,
-      imagen: "/imagenes/placar-moderno.jpg",
-      categoria: "Dormitorio"
+      nombre: "Escritorio de oficina metálico",
+      descripcion: "Escritorio de oficina con estructura de acero inoxidable y tablero de melamina.",
+      precioUnitario: 65000,
+      imagenes: ["https://images.unsplash.com/photo-1589820296156-2454bb8e8f54?w=800"],
+      etiqueta: "Oficina",
+      stock: 7,
+      categoria: 8,
+      material: 5
     },
     {
       id: 5,
-      nombre: "Silla de Oficina",
-      descripcion: "Silla ",
-      precio: 45000,
-      imagen: "/imagenes/silla-oficina.jpg",
-      categoria: "Sillas"
+      nombre: " Silla exterior de aluminio y ratán",
+      descripcion: "Silla para exteriores con estructura de aluminio y asiento de ratán natural",
+      precioUnitario: 37000,
+      imagenes: ["https://images.unsplash.com/photo-1598300042247-eeeabcf3b7e9?w=800  "],
+      etiqueta: "Exterior",
+      stock: 12,
+      categoria: 9,
+      material: 10
     },
     {
       id: 6,
-      nombre: "Mesa Ratona",
-      descripcion: "Mesa ratona",
-      precio: 32000,
-      imagen: "/imagenes/mesa-ratona.jpg",
-      categoria: "Mesas"
+      nombre: "Cuna infantil de bambú",
+      descripcion: "Cuna infantil fabricada en bambú natural con barandas desmontables.",
+      precioUnitario: 102000,
+      imagenes: ["https://images.unsplash.com/photo-1600566752781-3df8fc9f5cbe?w=800"],
+      etiqueta: "Infantil",
+      stock: 3,
+      categoria: 10,
+      material: 12
     }
   ];
 
@@ -79,45 +100,52 @@ export default function ProductosDestacados() {
             <span className="text-[#32368b]!">DESTACADOS</span>
           </h2>
           <p className="text-lg text-[#32368b]! max-w-2xl mx-auto">
-            acá tendríamos que poner una descripcion.
+            acá tendríamos que poner una descripcion.            
           </p>
         </div>
 
-        {/* Grid de productos */}
+        {/* Grid de muebles */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-          {productosDestacados.map((producto) => (
+          {mueblesDestacados.map((mueble) => (
             <div
-              key={producto.id}
+              key={mueble.id}
               className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
             >
-              {/* Imagen del producto */}
+              {/* Imagen del mueble */}
               <div className="relative overflow-hidden">
                 <img
-                  src={producto.imagen}
-                  alt={producto.nombre}
+                  src={mueble.imagenes[0]}
+                  alt={mueble.nombre}
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 
-                {/* Badge de categoría */}
+                {/* Badge de etiqueta */}
                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                  {producto.categoria}
+                  {mueble.etiqueta}
                 </div>
               </div>
 
-              {/* Contenido del producto */}
+              {/* Contenido del mueble */}
               <div className="p-6">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                  {producto.nombre}
+                  {mueble.nombre}
                 </h3>
                 
                 <p className="text-gray-600 mb-4 line-clamp-2">
-                  {producto.descripcion}
+                  {mueble.descripcion}
                 </p>
 
                 {/* Precio */}
                 <div className="mb-4">
                   <span className="text-2xl font-bold text-gray-900">
-                    {formatearPrecio(producto.precio)}
+                    {formatearPrecio(mueble.precioUnitario)}
+                  </span>
+                </div>
+
+                {/* Stock */}
+                <div className="mb-4">
+                  <span className="text-sm text-gray-600">
+                    Stock: {mueble.stock} unidades
                   </span>
                 </div>
 
@@ -127,7 +155,7 @@ export default function ProductosDestacados() {
                     Agregar al Carrito
                   </button>
                   <Link
-                    to={`/producto/${producto.id}`}
+                    to={`/mueble/${mueble.id}`}
                     className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-[#32368b]! py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                   >
                     Ver más
@@ -141,10 +169,10 @@ export default function ProductosDestacados() {
         {/* Botón ver más */}
         <div className="text-center mt-12">
           <Link
-            to="/productos"
+            to="/muebles"
             className="inline-block bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200"
           >
-            Ver Todos los Productos
+            Ver Todos los Muebles
           </Link>
         </div>
       </div>
