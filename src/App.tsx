@@ -24,7 +24,7 @@ function App() {
 
             console.log(res.data)
             setClientes(res.data.data)
-        } catch(err) {
+        } catch (err) {
             console.error(err)
         }
     };
@@ -45,12 +45,25 @@ function App() {
             </Routes>
 
             <h1>Clientes</h1>
-            {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-            {/* ejemplo: mostrar nombre y correo */}
             {clientes.map((cliente) => (
                 <div key={cliente.id}>
-                    <h2>{cliente.nombre} {cliente.apellido}</h2>
-                    <p>{cliente.email}</p>
+                    <h2>
+                        {cliente.apellido} {cliente.nombre}
+                    </h2>
+                    <p>Email: {cliente.email}</p>
+
+                    <h3>Favoritos:</h3>
+                    {cliente.favoritos && cliente.favoritos.length > 0 ? (
+                        <ul>
+                            {cliente.favoritos.map((fav) => (
+                                <li key={fav.id}>
+                                    🪑 {`Mueble ID ${fav.mueble}`}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No tiene favoritos.</p>
+                    )}
                 </div>
             ))}
         </div>
