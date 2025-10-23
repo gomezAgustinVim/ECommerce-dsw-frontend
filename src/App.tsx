@@ -8,18 +8,29 @@ import Sillas from './pages/sillas';
 import Mesa from './pages/mesa';
 import { type Cliente } from './types';
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+export const api = axios.create({
+    baseURL: "http://localhost:3000/api",
+    withCredentials: true,
+});
+
 function App() {
-    const api_url = "http://localhost:3000/api/"
     const [clientes, setClientes] = useState<Cliente[]>([]);
 
+    const fetchClientes = async () => {
+        try {
+            const res = await api.get("/clientes");
+
+            console.log(res.data)
+            setClientes(res.data.data)
+        } catch(err) {
+            console.error(err)
+        }
+    };
+
     useEffect(() => {
-        fetch(`${api_url}/clientes`) // 👈 URL del backend
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json); // <- verificás qué llega
-                setClientes(json.data); // <- extrae el array "data"
-            })
-            .catch((err) => console.error("Error al conectar al backend:", err));
+        fetchClientes();
     }, []);
 
     return (
