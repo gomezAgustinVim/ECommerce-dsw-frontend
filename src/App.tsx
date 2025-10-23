@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/header';
@@ -9,9 +8,6 @@ import Home from './pages/home';
 import Mesa from './pages/mesa';
 import MuebleDetail from './pages/muebleDetail';
 import Sillas from './pages/sillas';
-
-axios.defaults.baseURL = 'http://localhost:3000/api';
-axios.defaults.withCredentials = true;
 
 function App() {
 	return (
