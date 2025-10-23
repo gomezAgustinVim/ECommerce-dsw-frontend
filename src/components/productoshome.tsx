@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../api/axiosInstance.tsx';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type Mueble } from '../types.tsx';
@@ -8,7 +8,7 @@ export default function MueblesDestacados() {
 
 	const fetchMueblesDestacados = async () => {
 		try {
-			const res = await axios.get('/muebles');
+			const res = await api.get('/muebles');
 
 			console.log(res.data);
 			setMueblesDestacados(res.data.data);
