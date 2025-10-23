@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import api from '../api/axiosInstance';
 import { type Cliente } from '../types';
 
 export default function Clientes() {
@@ -7,7 +7,7 @@ export default function Clientes() {
 
 	const fetchClientes = async () => {
 		try {
-			const res = await axios.get('/clientes');
+			const res = await api.get('/clientes');
 
 			console.log(res.data);
 			setClientes(res.data.data);
