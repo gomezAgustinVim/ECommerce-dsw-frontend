@@ -24,7 +24,9 @@ Si queremos buildear estáticamente, podemos usar
 
 ```js
 npm run build
+```
 
+```js
 pnpm build
 ```
 
