@@ -4,7 +4,7 @@ import ProductosDestacados from "../components/productoshome";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center relative pt-20"> {/* le puse pt-20 para el header fijo */}
+    <div className="flex flex-col items-center relative"> {/* cambio header a sticky */}
       {/* Botón en esquina superior derecha */}
       <Link
         to="/login"
