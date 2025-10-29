@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/header';
-import Login from './components/login';
+import Login from './pages/login';
 import Carrito from './pages/carrito'; // <-- importar el componente
 import Clientes from './pages/clientes';
 import Home from './pages/home';
