@@ -13,23 +13,29 @@ const Login = () => {
   const [dni, setDni] = useState("");
   const [usuario, setUsuario] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [globalError, setGlobalError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setGlobalError("");
     setLoading(true);
 
     try {
       // validaciones 
       if (!email || !password) {
-        setError("Todos los campos son obligatorios");
+        setGlobalError("Todos los campos son obligatorios");
+        setLoading(false);
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setGlobalError("Las contraseñas no coinciden");
         setLoading(false);
         return;
       }
 
       if (isRegister) {
-        const response = await api.post("/clientes", {
+        await api.post("/clientes", {
           email,
           contrasenia: password,
           nombre,
@@ -43,39 +49,21 @@ const Login = () => {
         });
 
         alert("¡Registro exitoso!");
-        console.log(response.data);
-        setIsRegister(false);
-
-        if (password !== confirmPassword) {
-          setError("Las contraseñas no coinciden");
-          setLoading(false);
-          return;
-        }
-
-        if (password.length < 8) {
-          setError("La contraseña debe tener al menos 8 caracteres");
-          setLoading(false);
-          return;
-        }
-
-        console.log("Registro exitoso:", { email, password });
-        alert("¡Registro exitoso!");
         setIsRegister(false); // cambia a login despues del registro
       } else {
-        const response = await api.post("/clientes/login", {
+        await api.post("/clientes/login", {
           email,
           contrasenia: password,
         });
         alert("¡Inicio de sesión exitoso!");
-        console.log(response.data);
       }
     } catch (err: any) {
       if (err.response && err.response.status === 401) {
-        setError("Email o contraseña incorrecta");
+        setGlobalError("Email o contraseña incorrecta");
       } else if (err.response && err.response.status === 400) {
-        setError("Solicitud inválida. Por favor, verifica que los datos ingresados sean correctos.");
+        setGlobalError("Solicitud inválida. Por favor, verifica que los datos ingresados sean correctos.");
       } else {
-        setError("Error al conectar con el servidor");
+        setGlobalError("Error al conectar con el servidor");
       }
       console.error("Error en login:", err);
     } finally {
@@ -104,9 +92,9 @@ const Login = () => {
         </h2>
 
         {/* muestra error */}
-        {error && (
+        {globalError && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-            {error}
+            {globalError}
           </div>
         )}
 
@@ -138,6 +126,8 @@ const Login = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
             placeholder="Ingresa tu contraseña"
             required
+            minLength={8}
+            maxLength={64}
             disabled={loading}
           />
         </div>
@@ -157,6 +147,8 @@ const Login = () => {
                 placeholder="Repite tu contraseña"
                 className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                 required
+                minLength={8}
+                maxLength={64}
                 disabled={loading}
               />
             </div>
@@ -170,7 +162,9 @@ const Login = () => {
                 onChange={(e) => setNombre(e.target.value)}
                 className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                 required
+                minLength={2}
               />
+
               <input
                 type="text"
                 placeholder="Apellido"
@@ -178,6 +172,7 @@ const Login = () => {
                 onChange={(e) => setApellido(e.target.value)}
                 className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
                 required
+                minLength={2}
               />
             </div>
 
@@ -197,6 +192,7 @@ const Login = () => {
               onChange={(e) => setTelefono(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               required
+              minLength={8}
             />
             <input
               type="text"
@@ -205,6 +201,7 @@ const Login = () => {
               onChange={(e) => setDni(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               required
+              minLength={8}
             />
             <input
               type="text"
@@ -213,6 +210,7 @@ const Login = () => {
               onChange={(e) => setUsuario(e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
               required
+              minLength={3}
             />
           </div>
         )}
@@ -236,7 +234,7 @@ const Login = () => {
             type="button"
             onClick={() => {
               setIsRegister(!isRegister);
-              setError("");
+              setGlobalError("");
             }}
             disabled={loading}
             className="text-blue-600 hover:underline font-medium ml-1"
