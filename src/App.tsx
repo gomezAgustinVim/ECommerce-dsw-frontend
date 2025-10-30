@@ -8,6 +8,7 @@ import Home from './pages/home';
 import Mesa from './pages/mesa';
 import MuebleDetail from './pages/muebleDetail';
 import Sillas from './pages/sillas';
+import Footer from './components/footer';
 
 function App() {
 	return (
@@ -23,6 +24,9 @@ function App() {
 				<Route path="/mesa" element={<Mesa />} />
 				<Route path="/clientes" element={<Clientes />} />
 			</Routes>
+
+			<Footer />
+
 		</div>
 	);
 }
