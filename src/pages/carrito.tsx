@@ -39,8 +39,8 @@ export default function Carrito() {
     // };
 
     return (
-        <section className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-2xl shadow-lg my-10">
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">
+        <section className="max-w-4xl mx-auto bg-gray-50 p-4 rounded-2xl shadow-lg mt-10 sm:my-6 sm:p-6">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-800">
                 Carrito de Compras</h2>
 
             {items.length === 0 ? (
@@ -50,9 +50,9 @@ export default function Carrito() {
                     {items.map(item => (
                         <li
                             key={item.id}
-                            className="flex items-center justify-between bg-white rounded-xl shadow p-4"
+                            className="flex flex-col bg-white rounded-xl shadow p-4 gap-4 sm:flex-row sm:items-center sm:justify-between"
                         >
-                            <div className="flex items-center gap-4">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                                 <img
                                     src={item.image}
                                     alt={item.title}
@@ -63,26 +63,32 @@ export default function Carrito() {
                                 <h3 className="text-lg font-semibold text-gray-800">
                                     {item.title}
                                 </h3>
-                                <p className="text-gray-500">${item.price.toLocaleString()}</p>
+                                <p className="text-gray-500 text-sm">${item.price.toLocaleString()}</p>
                             </div>
 
                             <div
-                                className="flex items-center gap-6"
-                            >
-                                <label className="text-gray-700 font-medium">Cantidad:</label>
-                                <input
-                                    type="number"
-                                    value={item.quantity}
-                                    min={1}
-                                    onChange={(e) => updateQty(item.id, Number(e.target.value))}
-                                    className="w-16 text-center border rounded-md border-gray-300 text-gray-700 focus:ring-2 focus:ring-indigo-500"
-                                />
+                                className="flex flex-col gap-2 sm:flex-row
+                                sm:items-center sm:gap-6">
+                                <div className="flex items-center gap-2">
+                                    <label className="text-gray-700 font-medium text-sm">Cantidad:</label>
+                                    <input
+                                        type="number"
+                                        value={item.quantity}
+                                        min={1}
+                                        onChange={(e) => updateQty(item.id, Number(e.target.value))}
+                                        className="w-16 text-center border
+                                    rounded-md border-gray-300 text-gray-700
+                                    focus:ring-2 focus:ring-indigo-500 text-sm"
+                                    />
+                                </div>
+
                                 <div
-                                    className="text-right font-bold text-gray-800 w-24">
+                                    className="text-right font-bold text-gray-800 w-10 sm:w-auto">
                                     ${(item.price * item.quantity).toLocaleString()}
                                 </div>
+
                                 <button onClick={() => removeItem(item.id)}
-                                    className="text-sm text-white hover:underline"
+                                    className="text-sm text-white hover:underline self-start sm:self-auto"
                                 >Eliminar</button>
                             </div>
                         </li>
@@ -90,14 +96,14 @@ export default function Carrito() {
                 </ul>
             )}
 
-            <div className="mt-8 text-right space-y-2">
-                <p className="text-gray-700">
+            <div className="mt-6 text-right space-y-1 sm:space-y-2">
+                <p className="text-gray-700 text-sm sm:text-base">
                     Subtotal:{" "}
                     <span className="font-semibold text-gray-900">
                         ${subtotal.toLocaleString()}
                     </span>
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-sm sm:text-base">
                     Envío:{" "}
                     <span className="font-semibold text-gray-900">
                         ${shipping.toLocaleString()}
@@ -107,16 +113,16 @@ export default function Carrito() {
                     Total: ${total.toLocaleString()}
                 </p>
 
-                <div className="mt-6 flex justify-end gap-4">
+                <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">
                     <button
                         onClick={() => navigate("/")}
-                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium"
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium w-full sm:w-auto"
                     >
                         Continuar comprando
                     </button>
                     <button
                         // onClick={finalizarCompra} sin logica todavia
-                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium w-full sm:w-auto"
                     >
                         Finalizar compra
                     </button>

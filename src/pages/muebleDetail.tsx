@@ -24,37 +24,66 @@ export default function MuebleDetail() {
         fetchMueble();
     }, [id]);
 
-    if (loading) return <p>Cargando...</p>;
-    if (!mueble) return <p>No se encontró el mueble.</p>;
+    if (loading) return <p className="text-center py-10">Cargando...</p>;
+    if (!mueble) return <p className='text-center py-10 text-gray-700'>No se encontró el mueble.</p>;
 
     return (
-        <div className="mueble-detalle">
-            <h1>{mueble.descripcion}</h1>
+        <section className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-50">
+            <div className="max-w-3xl w-full p-6 sm:p-10 rounded-2xl">
+                <h1 className="text-2xl sm:text-4xl font-bold text-center text-indigo-700 mb-6">
+                    {mueble.descripcion}
+                </h1>
 
-            {/* Tengo mas de una imagen? entonces muestro todas con menor tamaño */}
-            {mueble.imagenes.length > 1 ? (
-                mueble.imagenes.map((i) => (
-                    <img src={i} alt={mueble.descripcion} width="200" />
-                ))
-            ) : (
-                <img src={mueble.imagenes[0]} alt={mueble.descripcion} width="500" />
-            )}
-            <p>
-                <strong>Etiqueta:</strong> {mueble.etiqueta}
-            </p>
-            <p>
-                <strong>Precio:</strong> ${mueble.precioUnitario}
-            </p>
-            <p>
-                <strong>Stock:</strong> {mueble.stock}
-            </p>
-            <p>
-                <strong>Categoría:</strong> {mueble.categoria.nombre}
-            </p>
-            <p>
-                <strong>Material:</strong> {mueble.material.nombre}
-            </p>
-            <button onClick={() => window.history.back()}>← Volver</button>
-        </div>
+                {/* Imagen(es) */}
+                <div className="flex flex-col items-center gap-3 mb-6">
+                    {mueble.imagenes.length > 1 ? (
+                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                            {mueble.imagenes.map((i, idx) => (
+                                <img
+                                    key={idx}
+                                    src={i}
+                                    alt={mueble.descripcion}
+                                    className="w-full h-40 object-cover rounded-lg shadow"
+                                />
+                            ))}
+                        </div>
+                    ) : (
+                        <img
+                            src={mueble.imagenes[0]}
+                            alt={mueble.descripcion}
+                            className="w-full max-h-[450px] object-cover rounded-lg shadow"
+                        />
+                    )}
+                </div>
+
+                <div className="space-y-2 text-gray-700 text-center sm:text-left">
+                    <p>
+                        <strong>Etiqueta:</strong> {mueble.etiqueta}
+                    </p>
+                    <p>
+                        <strong>Precio:</strong> ${mueble.precioUnitario}
+                    </p>
+                    <p>
+                        <strong>Stock:</strong> {mueble.stock}
+                    </p>
+                    <p>
+                        <strong>Categoría:</strong> {mueble.categoria.nombre}
+                    </p>
+                    <p>
+                        <strong>Material:</strong> {mueble.material.nombre}
+                    </p>
+                </div>
+
+                <div className="mt-8 flex justify-center sm:justify-start">
+                    <button
+                        onClick={() => window.history.back()}
+                        className="px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-red-600 transition w-full sm:w-auto"
+                    >
+                        ← Volver
+                    </button>
+                </div>
+
+            </div>
+        </section>
     );
 }
