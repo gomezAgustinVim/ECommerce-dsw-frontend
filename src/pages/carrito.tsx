@@ -39,7 +39,7 @@ export default function Carrito() {
     // };
 
     return (
-        <section className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-2xl shadow-lg mt-10">
+        <section className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-2xl shadow-lg my-10">
             <h2 className="text-3xl font-bold mb-6 text-gray-800">
                 Carrito de Compras</h2>
 
@@ -75,14 +75,14 @@ export default function Carrito() {
                                     value={item.quantity}
                                     min={1}
                                     onChange={(e) => updateQty(item.id, Number(e.target.value))}
-                                    className="w-16 text-center border rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                    className="w-16 text-center border rounded-md border-gray-300 text-gray-700 focus:ring-2 focus:ring-indigo-500"
                                 />
                                 <div
                                     className="text-right font-bold text-gray-800 w-24">
                                     ${(item.price * item.quantity).toLocaleString()}
                                 </div>
                                 <button onClick={() => removeItem(item.id)}
-                                    className="text-sm text-red-600 hover:underline"
+                                    className="text-sm text-white hover:underline"
                                 >Eliminar</button>
                             </div>
                         </li>
