@@ -1,73 +1,82 @@
 export type BaseType = {
-	id: number;
-	fechaCreacion: string; // ISO string (al serializar desde el back)
-	fechaActualizacion: string; // idem
+    id: number;
+    fechaCreacion: string; // ISO string (al serializar desde el back)
+    fechaActualizacion: string; // idem
 };
 
 export type Favorito = BaseType & {
-	cliente: Cliente;
-	mueble: Mueble;
+    cliente: Cliente;
+    mueble: Mueble;
 };
 
 export type Cliente = BaseType & {
-	nombre: string;
-	apellido: string;
-	direccion: string;
-	telefono: string;
-	dni: string;
-	usuario: string;
-	email: string;
-	contrasenia: string;
-	rol: 'user' | 'admin';
-	fondos: number;
-	pedidos: Pedido[];
-	favoritos: Favorito[];
+    nombre: string;
+    apellido: string;
+    direccion: string;
+    telefono: string;
+    dni: string;
+    usuario: string;
+    email: string;
+    contrasenia: string;
+    rol: 'user' | 'admin';
+    fondos: number;
+    pedidos: Pedido[];
+    favoritos: Favorito[];
 };
 
 export type Categoria = BaseType & {
-	nombre: string;
-	descripcion: string;
-	imagen?: string;
+    nombre: string;
+    descripcion: string;
+    imagen?: string;
 };
 
 export type Material = BaseType & {
-	nroMaterial: string;
-	nombre: string;
+    nroMaterial: string;
+    nombre: string;
 };
 
 export type Mueble = BaseType & {
-	nombre: string;
-	descripcion: string;
-	etiqueta: string;
-	stock: number;
-	precioUnitario: number;
-	imagenes: string[];
-	categoria: Categoria;
-	material: Material;
+    nombre: string;
+    descripcion: string;
+    etiqueta: string;
+    stock: number;
+    precioUnitario: number;
+    imagenes: string[];
+    categoria: Categoria;
+    material: Material;
 };
 
 export type Item = BaseType & {
-	cantidad: number;
-	subtotal: number;
-	estado: string;
-	mueble: Mueble;
-	pedido?: Pedido;
+    cantidad: number;
+    subtotal: number;
+    estado: string;
+    mueble: Mueble;
+    pedido?: Pedido;
 };
 
+export type CartItem = {
+    id: number;
+    title: string;
+    price: number;
+    quantity: number;
+    image?: string;
+};
+
+
 export type Pedido = BaseType & {
-	cliente: Cliente;
-	items: Item[];
-	fechaHora: string;
-	estado: string;
-	total: number;
-	// pago?: Pago;
+    cliente: Cliente;
+    items: Item[];
+    fechaHora: string;
+    estado: string;
+    total: number;
+    // pago?: Pago;
 };
 
 export type Descuento = BaseType & {
-	codigo: string;
-	tipo: 'Cantidad' | 'Monto';
-	descripcion?: string;
-	porcentaje: number;
-	fechaExpiracion: string;
-	pedido: Pedido;
+    codigo: string;
+    tipo: 'Cantidad' | 'Monto';
+    descripcion?: string;
+    porcentaje: number;
+    fechaExpiracion: string;
+    pedido: Pedido;
 };

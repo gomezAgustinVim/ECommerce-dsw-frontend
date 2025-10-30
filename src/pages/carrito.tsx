@@ -1,24 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
-type CartItem = {
-    id: string;
-    title: string;
-    price: number;
-    quantity: number;
-    image?: string;
-};
+import { type CartItem } from "../types";
 
 export default function Carrito() {
     const [items, setItems] = useState<CartItem[]>([
-        { id: "p1", title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
-        { id: "p2", title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
+        { id: 1, title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
+        { id: 2, title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
     ]);
 
-    const updateQty = (id: string, qty: number) =>
+    const updateQty = (id: number, qty: number) =>
         setItems((prev) => prev.map(i => i.id === id ? { ...i, quantity: Math.max(1, qty) } : i));
 
-    const removeItem = (id: string) => setItems((prev) => prev.filter(i => i.id !== id));
+    const removeItem = (id: number) => setItems((prev) => prev.filter(i => i.id !== id));
 
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
     const shipping = subtotal > 0 ? 150 : 0;
@@ -26,51 +19,109 @@ export default function Carrito() {
 
     const navigate = useNavigate();
 
+    // const finalizarCompra = async () => {
+    //     try {
+    //         const clienteId = 1; // 🔸 simulación, debería venir del login o contexto
+    //         const pedidoItems = items.map((i) => ({
+    //             mueble: i.id,
+    //             cantidad: i.quantity,
+    //         }));
+    //
+    //         await crearPedido(clienteId, pedidoItems);
+
+    //         setItems([]);
+    //         localStorage.removeItem("carrito");
+    //         navigate("/mis-pedidos");
+    //     } catch (error) {
+    //         console.error("Error al finalizar compra:", error);
+    //         alert("Hubo un error al procesar el pedido.");
+    //     }
+    // };
+
     return (
-        <article>
-            <h2 className="text-3xl font-bold mb-4">Carrito de Compras</h2>
+        <section className="max-w-4xl mx-auto bg-gray-50 p-6 rounded-2xl shadow-lg mt-10">
+            <h2 className="text-3xl font-bold mb-6 text-gray-800">
+                Carrito de Compras</h2>
 
-            <ul>
-                {items.map(item => (
-                    <li key={item.id} style={{ display: "flex", gap: 12, alignItems: "center", padding: 12, borderRadius: 8, background: "#fff", marginBottom: 8 }}>
-                        <img src={item.image} alt={item.title} style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 6 }} />
-                        <div style={{ flex: 1 }}>
-                            <div style={{ fontWeight: 700 }}>{item.title}</div>
-                            <div style={{ color: "#666" }}>${item.price.toFixed(2)}</div>
-                        </div>
+            {items.length === 0 ? (
+                <p className="text-gray-600">Tu carrito está vacío.</p>
+            ) : (
+                <ul className="space-y-4">
+                    {items.map(item => (
+                        <li
+                            key={item.id}
+                            className="flex items-center justify-between bg-white rounded-xl shadow p-4"
+                        >
+                            <div className="flex items-center gap-4">
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    className="w-20 h-20 object-cover rounded-lg"
+                                />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-800">
+                                    {item.title}
+                                </h3>
+                                <p className="text-gray-500">${item.price.toLocaleString()}</p>
+                            </div>
 
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ marginRight: 6 }}>Cantidad:</span>
-                            <input
-                                type="number"
-                                value={item.quantity}
-                                min={1}
-                                onChange={(e) => updateQty(item.id, Number(e.target.value))}
-                                style={{
-                                    width: 64,
-                                    padding: 6,
-                                    borderRadius: 6,
-                                    border: "1px solid #060000ff",
-                                    color: "#000000",
-                                    background: "#ffffff"
-                                }}
-                            />
-                            <div style={{ width: 100, textAlign: "right", fontWeight: 700 }}>${(item.price * item.quantity).toFixed(2)}</div>
-                            <button onClick={() => removeItem(item.id)} style={{ marginLeft: 12 }}>Eliminar</button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                            <div
+                                className="flex items-center gap-6"
+                            >
+                                <label className="text-gray-700 font-medium">Cantidad:</label>
+                                <input
+                                    type="number"
+                                    value={item.quantity}
+                                    min={1}
+                                    onChange={(e) => updateQty(item.id, Number(e.target.value))}
+                                    className="w-16 text-center border rounded-md border-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                />
+                                <div
+                                    className="text-right font-bold text-gray-800 w-24">
+                                    ${(item.price * item.quantity).toLocaleString()}
+                                </div>
+                                <button onClick={() => removeItem(item.id)}
+                                    className="text-sm text-red-600 hover:underline"
+                                >Eliminar</button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            )}
 
-            <div style={{ marginTop: 16, textAlign: "right" }}>
-                <div>Subtotal: ${subtotal.toFixed(2)}</div>
-                <div>Envío: ${shipping.toFixed(2)}</div>
-                <div style={{ fontWeight: 800, marginTop: 8 }}>Total: ${total.toFixed(2)}</div>
-                <div style={{ marginTop: 12 }}>
-                    <button onClick={() => navigate('/')} style={{ padding: "8px 14px", borderRadius: 8, marginRight: 8 }}>Continuar comprando</button>
-                    <button style={{ padding: "8px 14px", borderRadius: 8, background: "#535bf2", color: "#fff", border: "none" }}>Finalizar compra</button>
+            <div className="mt-8 text-right space-y-2">
+                <p className="text-gray-700">
+                    Subtotal:{" "}
+                    <span className="font-semibold text-gray-900">
+                        ${subtotal.toLocaleString()}
+                    </span>
+                </p>
+                <p className="text-gray-700">
+                    Envío:{" "}
+                    <span className="font-semibold text-gray-900">
+                        ${shipping.toLocaleString()}
+                    </span>
+                </p>
+                <p className="text-xl font-bold text-gray-900">
+                    Total: ${total.toLocaleString()}
+                </p>
+
+                <div className="mt-6 flex justify-end gap-4">
+                    <button
+                        onClick={() => navigate("/")}
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium"
+                    >
+                        Continuar comprando
+                    </button>
+                    <button
+                        // onClick={finalizarCompra} sin logica todavia
+                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium"
+                    >
+                        Finalizar compra
+                    </button>
                 </div>
             </div>
-        </article>
+        </section >
     );
 }
