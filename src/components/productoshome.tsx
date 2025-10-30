@@ -11,7 +11,13 @@ export default function MueblesDestacados() {
             const res = await api.get('/muebles');
 
             console.log(res.data);
-            setMueblesDestacados(res.data.data);
+            
+            // filtro los productos por la id
+            const todosLosMuebles = res.data.data;
+            const primerosTres = todosLosMuebles
+                .slice(0, 3); // agarro los primeros 3
+            
+            setMueblesDestacados(primerosTres);
         } catch (err) {
             console.error(err);
         }
@@ -39,12 +45,12 @@ export default function MueblesDestacados() {
                         <span className="text-[#32368b]!">DESTACADOS</span>
                     </h2>
                     <p className="text-lg text-[#32368b]! max-w-2xl mx-auto">
-                        acá tendríamos que poner una descripcion.
+                        Descubrí nuestros productos más exclusivos
                     </p>
                 </div>
 
                 {/* Grid de muebles */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
                     {mueblesDestacados.map((mueble) => (
                         <div
                             key={mueble.id}
@@ -61,6 +67,11 @@ export default function MueblesDestacados() {
                                 {/* Badge de etiqueta */}
                                 <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
                                     {mueble.etiqueta}
+                                </div>
+
+                                {/* Badge de Destacado */}
+                                <div className="absolute top-4 left-4 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-medium">
+                                    Destacado
                                 </div>
                             </div>
 
@@ -104,6 +115,13 @@ export default function MueblesDestacados() {
                         </div>
                     ))}
                 </div>
+
+                {/* mensaje si hay menos de 3 productos */}
+                {mueblesDestacados.length < 3 && (
+                    <div className="text-center mt-8 text-gray-500">
+                        <p>Próximamente más productos destacados</p>
+                    </div>
+                )}
 
                 <div className="text-center mt-12">
                     <Link

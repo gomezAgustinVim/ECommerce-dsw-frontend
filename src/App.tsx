@@ -9,6 +9,7 @@ import Mesa from './pages/mesa';
 import MuebleDetail from './pages/muebleDetail';
 import Sillas from './pages/sillas';
 import Footer from './components/footer';
+import Muebles from './pages/muebles'; 
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 			<main className='flex-grow bg-gray-100'>
 				<Routes>
 					<Route path="/" element={<Home />} />
+					<Route path="/muebles" element={<Muebles />} /><Route path="/muebles" element={<Muebles />} />
 					<Route path="/muebles/:id" element={<MuebleDetail />} />
 					<Route path="/carrito" element={<Carrito />} />{' '}
 					{/* <-- ruta para el carrito */}
