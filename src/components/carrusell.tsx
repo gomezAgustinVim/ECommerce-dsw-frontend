@@ -34,7 +34,7 @@ export default function Carrusell() {
     return () => clearInterval(interval);
   }, [isTransitioning]); // Solo depende de isTransitioning
 
-  // función que pasa a la siguiente imagen
+  // función que pasa a la sig imagen
   const nextSlide = () => {
     if (isTransitioning) return; 
     setIsTransitioning(true); 
