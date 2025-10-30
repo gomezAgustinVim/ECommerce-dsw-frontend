@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
     const [openMenu, setOpenMenu] = useState(false);
-    const [openProductos, setOpenProductos] = useState(false);
     const [query, setQuery] = useState("");
 
     const handleSearch = (e: React.FormEvent) => {
@@ -13,7 +12,6 @@ export default function Header() {
 
     const closeAll = () => {
         setOpenMenu(false);
-        setOpenProductos(false);
     };
 
     return (
@@ -61,38 +59,14 @@ export default function Header() {
                         </button>
                     </form>
 
-                    {/* LINK PRODUCTOS (DESPLEGABLE) */}
-                    <div className="relative px-4 md:px-0">
-                        <button
-                            onClick={() => setOpenProductos(!openProductos)}
-                            className="flex items-center gap-1 font-medium hover:text-blue-300 py-2 w-full md:w-auto"
-                        >
-                            Productos
-                            <span
-                                className={`transition-transform ${openProductos ? "rotate-180" : ""
-                                    }`}
-                            >
-                                ▼
-                            </span>
-                        </button>
-
-                        {openProductos && (
-                            <div className="md:absolute md:left-0 md:mt-2 bg-white text-gray-800 rounded-lg shadow-lg border border-gray-200 w-full md:w-56">
-                                {["Sillas", "Sofás", "Mesas", "Camas", "Almacenamiento"].map(
-                                    (item) => (
-                                        <Link
-                                            key={item}
-                                            to={`/${item.toLowerCase()}`}
-                                            className="block px-4 py-2 hover:bg-gray-100 rounded-md"
-                                            onClick={closeAll}
-                                        >
-                                            {item}
-                                        </Link>
-                                    )
-                                )}
-                            </div>
-                        )}
-                    </div>
+                    {/* LINK PRODUCTOS (DIRECTO A /MUEBLES) */}
+                    <Link
+                        to="/muebles"
+                        onClick={closeAll}
+                        className="px-4 py-2 hover:text-blue-300 font-medium"
+                    >
+                        Productos
+                    </Link>
 
                     {/* LINK CONTACTO */}
                     <Link
