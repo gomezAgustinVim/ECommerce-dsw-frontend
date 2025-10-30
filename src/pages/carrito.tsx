@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 type CartItem = {
     id: string;
@@ -22,6 +23,8 @@ export default function Carrito() {
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
     const shipping = subtotal > 0 ? 150 : 0;
     const total = subtotal + shipping;
+
+    const navigate = useNavigate();
 
     return (
         <article>
@@ -64,7 +67,7 @@ export default function Carrito() {
                 <div>Envío: ${shipping.toFixed(2)}</div>
                 <div style={{ fontWeight: 800, marginTop: 8 }}>Total: ${total.toFixed(2)}</div>
                 <div style={{ marginTop: 12 }}>
-                    <button style={{ padding: "8px 14px", borderRadius: 8, marginRight: 8 }}>Continuar comprando</button>
+                    <button onClick={() => navigate('/')} style={{ padding: "8px 14px", borderRadius: 8, marginRight: 8 }}>Continuar comprando</button>
                     <button style={{ padding: "8px 14px", borderRadius: 8, background: "#535bf2", color: "#fff", border: "none" }}>Finalizar compra</button>
                 </div>
             </div>
