@@ -12,18 +12,20 @@ import Footer from './components/footer';
 
 function App() {
 	return (
-		<div className="bg-frame">
+		<div className="flex flex-col min-h-screen">
 			<Header />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/muebles/:id" element={<MuebleDetail />} />
-				<Route path="/carrito" element={<Carrito />} />{' '}
-				{/* <-- ruta para el carrito */}
-				<Route path="/login" element={<Login />} />
-				<Route path="/sillas" element={<Sillas />} />
-				<Route path="/mesa" element={<Mesa />} />
-				<Route path="/clientes" element={<Clientes />} />
-			</Routes>
+			<main className='flex-grow bg-gray-100'>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/muebles/:id" element={<MuebleDetail />} />
+					<Route path="/carrito" element={<Carrito />} />{' '}
+					{/* <-- ruta para el carrito */}
+					<Route path="/login" element={<Login />} />
+					<Route path="/sillas" element={<Sillas />} />
+					<Route path="/mesa" element={<Mesa />} />
+					<Route path="/clientes" element={<Clientes />} />
+				</Routes>
+			</main>
 
 			<Footer />
 
