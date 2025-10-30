@@ -28,13 +28,13 @@ const Login = () => {
         return;
       }
 
-      if (password !== confirmPassword) {
-        setGlobalError("Las contraseñas no coinciden");
-        setLoading(false);
-        return;
-      }
-
       if (isRegister) {
+        if (password !== confirmPassword) {
+          setGlobalError("Las contraseñas no coinciden");
+          setLoading(false);
+          return;
+        }
+
         await api.post("/clientes", {
           email,
           contrasenia: password,
