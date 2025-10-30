@@ -10,6 +10,7 @@ import MuebleDetail from './pages/muebleDetail';
 import Sillas from './pages/sillas';
 import Footer from './components/footer';
 import Muebles from './pages/muebles'; 
+import Busqueda from './pages/buscador';
 
 function App() {
 	return (
@@ -26,6 +27,8 @@ function App() {
 					<Route path="/sillas" element={<Sillas />} />
 					<Route path="/mesa" element={<Mesa />} />
 					<Route path="/clientes" element={<Clientes />} />
+					<Route path="/busqueda" element={<Busqueda />} />
+
 				</Routes>
 			</main>
 

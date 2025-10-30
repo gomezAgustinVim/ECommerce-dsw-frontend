@@ -1,14 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
+
 
 export default function Header() {
     const [openMenu, setOpenMenu] = useState(false);
-    const [query, setQuery] = useState("");
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Buscando:", query);
-    };
+    
 
     const closeAll = () => {
         setOpenMenu(false);
@@ -40,26 +37,14 @@ export default function Header() {
                         }`}
                 >
                     {/* BÚSQUEDA */}
-                    <form
-                        onSubmit={handleSearch}
-                        className="flex w-full md:w-1/3 px-4 md:px-0 my-2 md:my-0"
-                    >
-                        <input
-                            type="text"
-                            placeholder="Buscar muebles..."
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            className="w-full rounded-l-md px-3 py-2 text-gray-300 border border-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    <div className="px-4 md:px-0 my-2 md:my-0 md:w-1/3">
+                        <SearchBar 
+                            onCloseMenu={closeAll}
+                            className="w-full"
                         />
-                        <button
-                            type="submit"
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-md"
-                        >
-                            🔍
-                        </button>
-                    </form>
+                    </div>
 
-                    {/* LINK PRODUCTOS (DIRECTO A /MUEBLES) */}
+                    {/* LINK PRODUCTOS */}
                     <Link
                         to="/muebles"
                         onClick={closeAll}
