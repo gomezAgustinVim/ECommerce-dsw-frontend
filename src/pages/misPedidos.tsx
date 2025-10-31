@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
-// import { useCarrito } from "../context/CarritoContext";
+import { useCarrito } from "../context/carritoContext";
 
 export default function MisPedidos() {
     const [pedidos, setPedidos] = useState<any[]>([]);

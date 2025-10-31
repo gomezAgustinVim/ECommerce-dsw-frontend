@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-
+import { useCarrito } from "../context/carritoContext";
 
 export default function Header() {
     const [openMenu, setOpenMenu] = useState(false);
@@ -18,6 +18,7 @@ export default function Header() {
         localStorage.removeItem("clienteId");
         setClienteId(null);
     };
+    const { count } = useCarrito();
 
     const closeAll = () => {
         setOpenMenu(false);
@@ -67,7 +68,7 @@ export default function Header() {
 
                     {/* LINK CONTACTO */}
                     <Link
-                        to="/contacto"
+                        to="https://github.com/gomezAgustinVim/tpDSWproposalGomezPitavinoBertottiZajarias"
                         onClick={closeAll}
                         className="px-4 py-2 hover:text-blue-300 font-medium"
                     >
