@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/header';
 import Login from './pages/login';
 import Carrito from './pages/carrito'; // <-- importar el componente
+import MisPedidos from './pages/misPedidos';
 import Clientes from './pages/clientes';
 import Home from './pages/home';
 import MuebleDetail from './pages/muebleDetail';
@@ -22,7 +23,7 @@ function App() {
 										<Route path='/perfil' element={<Perfil />} />
                     <Route path="/muebles/:id" element={<MuebleDetail />} />
                     <Route path="/carrito" element={<Carrito />} />{' '}
-                    {/* <-- ruta para el carrito */}
+                    <Route path="/mis-pedidos" element={<MisPedidos />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/clientes" element={<Clientes />} />
                     <Route path="/busqueda" element={<Busqueda />} />
