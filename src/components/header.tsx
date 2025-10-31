@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 
 export default function Header() {
     const [openMenu, setOpenMenu] = useState(false);
-    
+    const [clienteId, setClienteId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedId = localStorage.getItem("clienteId");
+        if (storedId) {
+            setClienteId(storedId);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("clienteId");
+        setClienteId(null);
+    };
 
     const closeAll = () => {
         setOpenMenu(false);
@@ -38,7 +50,7 @@ export default function Header() {
                 >
                     {/* BÚSQUEDA */}
                     <div className="px-4 md:px-0 my-2 md:my-0 md:w-1/3">
-                        <SearchBar 
+                        <SearchBar
                             onCloseMenu={closeAll}
                             className="w-full"
                         />
@@ -75,12 +87,31 @@ export default function Header() {
                     </Link>
 
                     {/* login */}
-                    <Link
-                        to="/login"
-                        className="px-4 py-2 border-2 rounded-md hover:border-blue-800 hover:!text-blue-800 whitespace-nowrap"
-                    >
-                        Iniciar sesión
-                    </Link>
+                    {clienteId ? (
+                        <div className="flex items-center gap-2 px-4">
+                            <Link
+                                to="/perfil"
+                                className="px-4 py-2 border-2 rounded-md hover:border-blue-800 hover:!text-blue-800 whitespace-nowrap"
+                                onClick={closeAll}
+                            >
+                                Perfil
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="px-4 py-2 border-2 rounded-md hover:border-blue-800 hover:!text-blue-800 whitespace-nowrap"
+                            >
+                                Cerrar sesión
+                            </button>
+                        </div>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="px-4 py-2 border-2 rounded-md hover:border-blue-800 hover:!text-blue-800 whitespace-nowrap"
+                            onClick={closeAll}
+                        >
+                            Iniciar sesión
+                        </Link>
+                    )}
                 </div>
             </nav>
         </header>
