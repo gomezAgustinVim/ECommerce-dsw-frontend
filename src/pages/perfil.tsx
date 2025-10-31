@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
-
-interface Cliente {
-  id: number;
-  nombre: string;
-  apellido: string;
-  email: string;
-  telefono: string;
-  direccion: string;
-  fechaRegistro?: string;
-}
+import { type Cliente } from "../types";
 
 export default function Perfil() {
   const [cliente, setCliente] = useState<Cliente | null>(null);
@@ -84,12 +75,6 @@ export default function Perfil() {
           <div>
             <span className="font-semibold">Dirección:</span> {cliente.direccion}
           </div>
-          {cliente.fechaRegistro && (
-            <div>
-              <span className="font-semibold">Fecha de registro:</span>{" "}
-              {new Date(cliente.fechaRegistro).toLocaleDateString()}
-            </div>
-          )}
         </div>
 
         <div className="mt-6 flex flex-col gap-3">
