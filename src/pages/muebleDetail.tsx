@@ -2,6 +2,7 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { type Mueble } from '../types';
+import { addToCart } from "../utils/cart";
 
 export default function MuebleDetail() {
     const { id } = useParams<{ id: string }>();
@@ -74,12 +75,31 @@ export default function MuebleDetail() {
                     </p>
                 </div>
 
-                <div className="mt-8 flex justify-center sm:justify-start">
+                <div className="mt-4 gap-2 flex flex-col justify-center sm:justify-start sm:flex-row">
                     <button
                         onClick={() => window.history.back()}
-                        className="px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-red-600 transition w-full sm:w-auto"
+                        className="px-6 py-2 bg-red-500 text-white font-medium
+                        rounded-lg shadow hover:bg-red-600 transition w-full
+                        sm:w-auto"
                     >
                         ← Volver
+                    </button>
+                    <button
+                        // onClick={agregarAlCarrito}
+                        onClick={() =>
+                            addToCart({
+                                id: mueble.id,
+                                title: mueble.descripcion,
+                                price: mueble.precioUnitario,
+                                quantity: 1,
+                                image: mueble.imagenes?.[0]
+                            })
+                        }
+                        className="px-6 py-2 bg-red-500 text-white font-medium
+                        rounded-lg shadow hover:bg-red-600 transition w-full
+                        sm:w-auto"
+                    >
+                        Agregar al carrito
                     </button>
                 </div>
 

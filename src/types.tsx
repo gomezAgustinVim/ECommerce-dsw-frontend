@@ -36,7 +36,6 @@ export type Material = BaseType & {
 };
 
 export type Mueble = BaseType & {
-    nombre: string;
     descripcion: string;
     etiqueta: string;
     stock: number;

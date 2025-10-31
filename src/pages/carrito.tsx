@@ -1,42 +1,73 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { type CartItem } from "../types";
+import api from "../api/axiosInstance";
 
 export default function Carrito() {
-    const [items, setItems] = useState<CartItem[]>([
-        { id: 1, title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
-        { id: 2, title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
-    ]);
+    // const [items, setItems] = useState<CartItem[]>([
+    //     { id: 1, title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
+    //     { id: 2, title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
+    // ]);
+
+    const [items, setItems] = useState<CartItem[]>(() => {
+        const stored = localStorage.getItem("carrito");
+        return stored ? JSON.parse(stored) : [];
+    });
 
     const updateQty = (id: number, qty: number) =>
-        setItems((prev) => prev.map(i => i.id === id ? { ...i, quantity: Math.max(1, qty) } : i));
+        setItems(prev => {
+            const updated = prev.map(i =>
+                i.id === id ? { ...i, quantity: Math.max(1, qty) } : i
+            );
+            localStorage.setItem("carrito", JSON.stringify(updated));
+            return updated;
+        });
 
-    const removeItem = (id: number) => setItems((prev) => prev.filter(i => i.id !== id));
+    const removeItem = (id: number) =>
+        setItems(prev => {
+            const updated = prev.filter(i => i.id !== id);
+            localStorage.setItem("carrito", JSON.stringify(updated));
+            return updated;
+        });
 
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
     const shipping = subtotal > 0 ? 150 : 0;
     const total = subtotal + shipping;
-
     const navigate = useNavigate();
 
-    // const finalizarCompra = async () => {
-    //     try {
-    //         const clienteId = 1; // 🔸 simulación, debería venir del login o contexto
-    //         const pedidoItems = items.map((i) => ({
-    //             mueble: i.id,
-    //             cantidad: i.quantity,
-    //         }));
-    //
-    //         await crearPedido(clienteId, pedidoItems);
+    const finalizarCompra = async () => {
+        const stored = JSON.parse(localStorage.getItem("carrito") || "[]");
 
-    //         setItems([]);
-    //         localStorage.removeItem("carrito");
-    //         navigate("/mis-pedidos");
-    //     } catch (error) {
-    //         console.error("Error al finalizar compra:", error);
-    //         alert("Hubo un error al procesar el pedido.");
-    //     }
-    // };
+        if (!stored.length) {
+            alert("El carrito está vacío");
+            return;
+        }
+
+        const clienteId = 2; // TEMPORAL hasta tener login
+
+        const payload = {
+            cliente: clienteId,
+            items: stored.map((i: any) => ({
+                mueble: i.id,
+                cantidad: i.quantity
+            }))
+        };
+
+        try {
+            await api.post("/pedidos", payload);
+
+            // limpiar carrito
+            localStorage.removeItem("carrito");
+            setItems([]);
+
+            alert("✅ Pedido realizado con éxito!");
+            navigate("/mis-pedidos");
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Error al procesar el pedido");
+        }
+    };
 
     return (
         <section className="max-w-4xl mx-auto bg-gray-50 p-4 rounded-2xl shadow-lg mt-10 sm:my-6 sm:p-6">
@@ -121,7 +152,7 @@ export default function Carrito() {
                         Continuar comprando
                     </button>
                     <button
-                        // onClick={finalizarCompra} sin logica todavia
+                        onClick={finalizarCompra}
                         className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium w-full sm:w-auto"
                     >
                         Finalizar compra
