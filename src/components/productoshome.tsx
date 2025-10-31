@@ -2,10 +2,11 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type Mueble } from '../types.tsx';
-import { addToCart } from "../utils/cart";
+import { useCarrito } from '../context/carritoContext';
 
 export default function MueblesDestacados() {
     const [mueblesDestacados, setMueblesDestacados] = useState<Mueble[]>([]);
+    const { addItem } = useCarrito();
 
     const fetchMueblesDestacados = async () => {
         try {
@@ -103,9 +104,8 @@ export default function MueblesDestacados() {
                                 {/* Botones de acción */}
                                 <div className="flex gap-3">
                                     <button
-                                        // onClick={agregarAlCarrito}
                                         onClick={() =>
-                                            addToCart({
+                                            addItem({
                                                 id: mueble.id,
                                                 title: mueble.descripcion,
                                                 price: mueble.precioUnitario,
