@@ -51,11 +51,14 @@ const Login = () => {
         alert("¡Registro exitoso!");
         setIsRegister(false); // cambia a login despues del registro
       } else {
-        await api.post("/clientes/login", {
+        const response = await api.post("/clientes/login", {
           email,
           contrasenia: password,
         });
+        localStorage.setItem("clienteId", JSON.stringify(response.data.data.id));
         alert("¡Inicio de sesión exitoso!");
+        window.location.href = "/";
+        /* window.location.reload(); */
       }
     } catch (err: any) {
       if (err.response && err.response.status === 401) {

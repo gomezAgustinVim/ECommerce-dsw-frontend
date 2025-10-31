@@ -10,6 +10,7 @@ import MuebleDetail from './pages/muebleDetail';
 import Footer from './components/footer';
 import Muebles from './pages/muebles';
 import Busqueda from './pages/buscador';
+import Perfil from './pages/perfil';
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/muebles" element={<Muebles />} /><Route path="/muebles" element={<Muebles />} />
+										<Route path='/perfil' element={<Perfil />} />
                     <Route path="/muebles/:id" element={<MuebleDetail />} />
                     <Route path="/carrito" element={<Carrito />} />{' '}
                     <Route path="/mis-pedidos" element={<MisPedidos />} />

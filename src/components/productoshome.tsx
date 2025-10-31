@@ -2,6 +2,7 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type Mueble } from '../types.tsx';
+import { addToCart } from "../utils/cart";
 
 export default function MueblesDestacados() {
     const [mueblesDestacados, setMueblesDestacados] = useState<Mueble[]>([]);
@@ -11,12 +12,12 @@ export default function MueblesDestacados() {
             const res = await api.get('/muebles');
 
             console.log(res.data);
-            
+
             // filtro los productos por la id
             const todosLosMuebles = res.data.data;
             const primerosTres = todosLosMuebles
                 .slice(0, 3); // agarro los primeros 3
-            
+
             setMueblesDestacados(primerosTres);
         } catch (err) {
             console.error(err);
@@ -60,7 +61,7 @@ export default function MueblesDestacados() {
                             <div className="relative overflow-hidden">
                                 <img
                                     src={mueble.imagenes[0]}
-                                    alt={mueble.nombre}
+                                    alt={mueble.descripcion}
                                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
@@ -78,7 +79,7 @@ export default function MueblesDestacados() {
                             {/* Contenido del mueble */}
                             <div className="p-6">
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                    {mueble.nombre}
+                                    {mueble.descripcion}
                                 </h3>
 
                                 <p className="text-gray-600 mb-4 line-clamp-2">
@@ -101,8 +102,22 @@ export default function MueblesDestacados() {
 
                                 {/* Botones de acción */}
                                 <div className="flex gap-3">
-                                    <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium">
-                                        Agregar al Carrito
+                                    <button
+                                        // onClick={agregarAlCarrito}
+                                        onClick={() =>
+                                            addToCart({
+                                                id: mueble.id,
+                                                title: mueble.descripcion,
+                                                price: mueble.precioUnitario,
+                                                quantity: 1,
+                                                image: mueble.imagenes?.[0]
+                                            })
+                                        }
+                                        className="px-6 py-2 bg-red-500 text-white font-medium
+                                        rounded-lg shadow hover:bg-red-600 transition w-full
+                                        sm:w-auto"
+                                    >
+                                        Agregar al carrito
                                     </button>
                                     <Link
                                         to={`/muebles/${mueble.id}`}
