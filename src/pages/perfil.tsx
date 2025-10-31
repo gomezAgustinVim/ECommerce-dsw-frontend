@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
 
 interface Cliente {
@@ -15,19 +16,20 @@ export default function Perfil() {
   const [cliente, setCliente] = useState<Cliente | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCliente = async () => {
       try {
-        const clienteId = JSON.parse(localStorage.getItem("clienteId") || "[]");
-        if (!clienteId) {
+        const clienteId = JSON.parse(localStorage.getItem("clienteId") || "null");
+        if (!clienteId || clienteId === "null") {
           setError("No hay una sesión activa. Inicia sesión para ver tu perfil.");
           setLoading(false);
           return;
+        } else {
+          const res = await api.get(`/clientes/${clienteId}`);
+          setCliente(res.data.data);
         }
-
-        const res = await api.get(`/clientes/${clienteId}`);
-        setCliente(res.data.data);
       } catch (err: any) {
         setError(err.response?.data?.message || "Error al obtener los datos del cliente");
       } finally {
@@ -50,12 +52,12 @@ export default function Perfil() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center px-4">
         <p className="text-red-600 font-semibold mb-4">{error}</p>
-        <a
-          href="/login"
-          className="text-blue-600 hover:underline font-medium"
+        <button
+          onClick={() => navigate("/login")}
+          className="px-4 py-2 border-2 rounded-md hover:border-blue-800 hover:text-blue-800 whitespace-nowrap"
         >
-          Ir a iniciar sesión
-        </a>
+          Iniciar sesión
+        </button>
       </div>
     );
   }
