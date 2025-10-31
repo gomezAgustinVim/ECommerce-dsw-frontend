@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-
+import { useCarrito } from "../context/carritoContext";
 
 export default function Header() {
     const [openMenu, setOpenMenu] = useState(false);
-    
+    const { count } = useCarrito();
 
     const closeAll = () => {
         setOpenMenu(false);
@@ -38,7 +38,7 @@ export default function Header() {
                 >
                     {/* BÚSQUEDA */}
                     <div className="px-4 md:px-0 my-2 md:my-0 md:w-1/3">
-                        <SearchBar 
+                        <SearchBar
                             onCloseMenu={closeAll}
                             className="w-full"
                         />
@@ -55,7 +55,7 @@ export default function Header() {
 
                     {/* LINK CONTACTO */}
                     <Link
-                        to="/contacto"
+                        to="https://github.com/gomezAgustinVim/tpDSWproposalGomezPitavinoBertottiZajarias"
                         onClick={closeAll}
                         className="px-4 py-2 hover:text-blue-300 font-medium"
                     >
@@ -70,7 +70,7 @@ export default function Header() {
                     >
                         🛒
                         <span className="md:absolute md:-top-1 md:-right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                            3
+                            {count}
                         </span>
                     </Link>
 

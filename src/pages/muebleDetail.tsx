@@ -2,12 +2,14 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { type Mueble } from '../types';
-import { addToCart } from "../utils/cart";
+import { useCarrito } from "../context/carritoContext";
 
 export default function MuebleDetail() {
     const { id } = useParams<{ id: string }>();
     const [mueble, setMueble] = useState<Mueble>();
     const [loading, setLoading] = useState(true);
+    const { addItem } = useCarrito();
+
 
     useEffect(() => {
         const fetchMueble = async () => {
@@ -87,7 +89,7 @@ export default function MuebleDetail() {
                     <button
                         // onClick={agregarAlCarrito}
                         onClick={() =>
-                            addToCart({
+                            addItem({
                                 id: mueble.id,
                                 title: mueble.descripcion,
                                 price: mueble.precioUnitario,
