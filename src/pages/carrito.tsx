@@ -43,7 +43,7 @@ export default function Carrito() {
             return;
         }
 
-        const clienteId = 2; // TEMPORAL hasta tener login
+        const clienteId = JSON.parse(localStorage.getItem("clienteId") || "[]");
 
         const payload = {
             cliente: clienteId,
