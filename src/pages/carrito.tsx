@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosInstance';
 import { useCarrito } from '../context/carritoContext';
+import { formatCurrency } from '../utils/formatCurrency';
 
 export default function Carrito() {
     // const [items, setItems] = useState<CartItem[]>([
@@ -16,6 +17,8 @@ export default function Carrito() {
     const navigate = useNavigate();
 
     const clienteId = JSON.parse(localStorage.getItem("clienteId") || "[]");
+    // const clienteId = 2; // este id sirve para probar, si no te logueaste
+    // descomentalo
 
     const finalizarCompra = async () => {
         const payload = {
@@ -30,7 +33,7 @@ export default function Carrito() {
             await api.post("/pedidos", payload);
             clearCart();
             alert("✅ Pedido creado con éxito");
-            navigate("/mis-pedidos");
+            navigate("/pedidos");
         } catch (err) {
             console.error(err + " ❌ Error al crear pedido");
         }
@@ -63,7 +66,7 @@ export default function Carrito() {
                                     {item.title}
                                 </h3>
                                 <p className="text-gray-500 text-sm">
-                                    ${item.price.toLocaleString()}
+                                    {formatCurrency(item.price)}
                                 </p>
                             </div>
 
@@ -87,7 +90,7 @@ export default function Carrito() {
                                 </div>
 
                                 <div className="text-right font-bold text-gray-800 w-10 sm:w-auto">
-                                    ${(item.price * item.quantity).toLocaleString()}
+                                    {formatCurrency((item.price) * item.quantity)}
                                 </div>
 
                                 <button
@@ -106,17 +109,17 @@ export default function Carrito() {
                 <p className="text-gray-700 text-sm sm:text-base">
                     Subtotal:{' '}
                     <span className="font-semibold text-gray-900">
-                        ${subtotal.toLocaleString()}
+                        {formatCurrency(subtotal)}
                     </span>
                 </p>
                 <p className="text-gray-700 text-sm sm:text-base">
                     Envío:{' '}
                     <span className="font-semibold text-gray-900">
-                        ${shipping.toLocaleString()}
+                        {formatCurrency(shipping)}
                     </span>
                 </p>
                 <p className="text-xl font-bold text-gray-900">
-                    Total: ${total.toLocaleString()}
+                    Total: {formatCurrency(total)}
                 </p>
 
                 <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-end">

@@ -2,6 +2,7 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type Mueble } from '../types.tsx';
+import { formatCurrency } from '../utils/formatCurrency';
 import { useCarrito } from '../context/carritoContext';
 
 export default function TodosLosMuebles() {
@@ -43,13 +44,6 @@ export default function TodosLosMuebles() {
             setMueblesFiltrados(filtrados);
         }
     }, [etiquetaSeleccionada, todosLosMuebles]);
-
-    const formatearPrecio = (precio: number) => {
-        return new Intl.NumberFormat('es-AR', {
-            style: 'currency',
-            currency: 'ARS',
-        }).format(precio);
-    };
 
     return (
         <section className="">
@@ -135,7 +129,7 @@ export default function TodosLosMuebles() {
                             <div className="relative overflow-hidden">
                                 <img
                                     src={mueble.imagenes[0]}
-                                    alt={mueble.nombre}
+                                    alt={mueble.descripcion}
                                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
@@ -148,7 +142,7 @@ export default function TodosLosMuebles() {
                             {/* contenido */}
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                    {mueble.nombre}
+                                    {mueble.descripcion.split(' ')[0] + ' ' + mueble.descripcion.split(' ')[2]}
                                 </h3>
 
                                 <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
@@ -158,7 +152,7 @@ export default function TodosLosMuebles() {
                                 {/* Precio */}
                                 <div className="mb-3">
                                     <span className="text-xl font-bold text-gray-900">
-                                        {formatearPrecio(mueble.precioUnitario)}
+                                        {formatCurrency(mueble.precioUnitario)}
                                     </span>
                                 </div>
 
