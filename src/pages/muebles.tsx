@@ -2,6 +2,8 @@ import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { type Mueble } from '../types.tsx';
+import { formatCurrency } from '../utils/formatCurrency';
+import { useCarrito } from '../context/carritoContext';
 
 export default function TodosLosMuebles() {
     const [todosLosMuebles, setTodosLosMuebles] = useState<Mueble[]>([]);
@@ -9,6 +11,7 @@ export default function TodosLosMuebles() {
     const [etiquetaSeleccionada, setEtiquetaSeleccionada] = useState<string>('todas');
     const [mueblesFiltrados, setMueblesFiltrados] = useState<Mueble[]>([]);
     const [menuAbierto, setMenuAbierto] = useState(false);
+    const { addItem } = useCarrito();
 
     const fetchTodosLosMuebles = async () => {
         try {
@@ -17,7 +20,7 @@ export default function TodosLosMuebles() {
             const muebles = res.data.data;
             setTodosLosMuebles(muebles);
             setMueblesFiltrados(muebles);
-            
+
             // Extraer etiquetas únicas de los muebles (en lugar de categorías)
             const etiquetasUnicas = [...new Set(muebles.map((mueble: Mueble) => mueble.etiqueta))] as string[];
             setEtiquetas(etiquetasUnicas);
@@ -42,17 +45,10 @@ export default function TodosLosMuebles() {
         }
     }, [etiquetaSeleccionada, todosLosMuebles]);
 
-    const formatearPrecio = (precio: number) => {
-        return new Intl.NumberFormat('es-AR', {
-            style: 'currency',
-            currency: 'ARS',
-        }).format(precio);
-    };
-
     return (
         <section className="">
             <div className="py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
+
                 {/* filtros por etiqueta  */}
                 <div className="mb-8 flex justify-between items-center">
                     {/* contador */}
@@ -85,15 +81,14 @@ export default function TodosLosMuebles() {
                                             setEtiquetaSeleccionada('todas');
                                             setMenuAbierto(false);
                                         }}
-                                        className={`block w-full text-left px-4 py-2 text-sm ${
-                                            etiquetaSeleccionada === 'todas'
-                                                ? 'bg-blue-100 text-white-700!'
-                                                : 'text-gray-700 hover:bg-gray-100'
-                                        }`}
+                                        className={`block w-full text-left px-4 py-2 text-sm ${etiquetaSeleccionada === 'todas'
+                                            ? 'bg-blue-100 text-white-700!'
+                                            : 'text-gray-700 hover:bg-gray-100'
+                                            }`}
                                     >
                                         Todas las categorías
                                     </button>
-                                    
+
                                     {etiquetas.map((etiqueta: string) => (
                                         <button
                                             key={etiqueta}
@@ -101,11 +96,10 @@ export default function TodosLosMuebles() {
                                                 setEtiquetaSeleccionada(etiqueta);
                                                 setMenuAbierto(false);
                                             }}
-                                            className={`block w-full text-left px-4 py-2 text-sm ${
-                                                etiquetaSeleccionada === etiqueta
-                                                    ? 'bg-blue-100 text-blue-700'
-                                                    : 'text-gray-700 hover:bg-gray-100'
-                                            }`}
+                                            className={`block w-full text-left px-4 py-2 text-sm ${etiquetaSeleccionada === etiqueta
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : 'text-gray-700 hover:bg-gray-100'
+                                                }`}
                                         >
                                             {etiqueta}
                                         </button>
@@ -118,8 +112,8 @@ export default function TodosLosMuebles() {
 
                 {/* cerrar menu al hacer click fuera */}
                 {menuAbierto && (
-                    <div 
-                        className="fixed inset-0 z-0" 
+                    <div
+                        className="fixed inset-0 z-0"
                         onClick={() => setMenuAbierto(false)}
                     ></div>
                 )}
@@ -135,7 +129,7 @@ export default function TodosLosMuebles() {
                             <div className="relative overflow-hidden">
                                 <img
                                     src={mueble.imagenes[0]}
-                                    alt={mueble.nombre}
+                                    alt={mueble.descripcion}
                                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
@@ -148,7 +142,7 @@ export default function TodosLosMuebles() {
                             {/* contenido */}
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                    {mueble.nombre}
+                                    {mueble.descripcion.split(' ')[0] + ' ' + mueble.descripcion.split(' ')[2]}
                                 </h3>
 
                                 <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
@@ -158,7 +152,7 @@ export default function TodosLosMuebles() {
                                 {/* Precio */}
                                 <div className="mb-3">
                                     <span className="text-xl font-bold text-gray-900">
-                                        {formatearPrecio(mueble.precioUnitario)}
+                                        {formatCurrency(mueble.precioUnitario)}
                                     </span>
                                 </div>
 
@@ -171,7 +165,20 @@ export default function TodosLosMuebles() {
 
                                 {/* botones */}
                                 <div className="flex gap-2">
-                                    <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm">
+                                    <button
+                                        onClick={() =>
+                                            addItem({
+                                                id: mueble.id,
+                                                title: mueble.descripcion,
+                                                price: mueble.precioUnitario,
+                                                quantity: 1,
+                                                image: mueble.imagenes?.[0]
+                                            })
+                                        }
+                                        className="flex-1 bg-blue-600
+                                    hover:bg-blue-700 text-white py-2 px-3
+                                    rounded-lg transition-colors duration-200
+                                    font-medium text-sm">
                                         Carrito
                                     </button>
                                     <Link

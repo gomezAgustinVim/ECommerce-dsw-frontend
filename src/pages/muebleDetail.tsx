@@ -1,15 +1,15 @@
-import api from '../api/axiosInstance';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import api from '../api/axiosInstance';
+import { useCarrito } from '../context/carritoContext';
+import { formatCurrency } from '../utils/formatCurrency';
 import { type Mueble } from '../types';
-import { useCarrito } from "../context/carritoContext";
 
 export default function MuebleDetail() {
     const { id } = useParams<{ id: string }>();
     const [mueble, setMueble] = useState<Mueble>();
     const [loading, setLoading] = useState(true);
     const { addItem } = useCarrito();
-
 
     useEffect(() => {
         const fetchMueble = async () => {
@@ -28,7 +28,12 @@ export default function MuebleDetail() {
     }, [id]);
 
     if (loading) return <p className="text-center py-10">Cargando...</p>;
-    if (!mueble) return <p className='text-center py-10 text-gray-700'>No se encontró el mueble.</p>;
+    if (!mueble)
+        return (
+            <p className="text-center py-10 text-gray-700">
+                No se encontró el mueble.
+            </p>
+        );
 
     return (
         <section className="min-h-screen flex flex-col items-center justify-start p-4 sm:p-6 bg-gray-50">
@@ -64,7 +69,7 @@ export default function MuebleDetail() {
                         <strong>Etiqueta:</strong> {mueble.etiqueta}
                     </p>
                     <p>
-                        <strong>Precio:</strong> ${mueble.precioUnitario}
+                        <strong>Precio:</strong> {formatCurrency(mueble.precioUnitario)}
                     </p>
                     <p>
                         <strong>Stock:</strong> {mueble.stock}
@@ -94,7 +99,7 @@ export default function MuebleDetail() {
                                 title: mueble.descripcion,
                                 price: mueble.precioUnitario,
                                 quantity: 1,
-                                image: mueble.imagenes?.[0]
+                                image: mueble.imagenes?.[0],
                             })
                         }
                         className="px-6 py-2 bg-red-500 text-white font-medium
@@ -104,7 +109,6 @@ export default function MuebleDetail() {
                         Agregar al carrito
                     </button>
                 </div>
-
             </div>
         </section>
     );

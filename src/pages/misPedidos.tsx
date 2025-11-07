@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
+import { formatCurrency } from "../utils/formatCurrency";
 import { useCarrito } from "../context/carritoContext";
 
 export default function MisPedidos() {
@@ -71,7 +72,7 @@ export default function MisPedidos() {
                             </div>
 
                             <p className="text-lg font-bold text-gray-900 mt-2 sm:mt-0">
-                                ${ped.total.toLocaleString()}
+                                {formatCurrency(ped.total)}
                             </p>
                         </div>
 

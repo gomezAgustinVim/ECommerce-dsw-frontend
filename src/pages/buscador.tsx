@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import api from '../api/axiosInstance';
+import { useCarrito } from '../context/carritoContext';
+import { formatCurrency } from '../utils/formatCurrency';
 import { type Mueble } from '../types';
 
 export default function Busqueda() {
     const location = useLocation();
     const [resultados, setResultados] = useState<Mueble[]>([]);
-    const [termino, setTermino] = useState("");
+    const [termino, setTermino] = useState('');
     const [todosLosMuebles, setTodosLosMuebles] = useState<Mueble[]>([]);
+    const { addItem } = useCarrito();
 
     // Cargar todos los muebles al montar el componente
     useEffect(() => {
@@ -30,11 +33,11 @@ export default function Busqueda() {
         setTermino(query);
 
         if (query && todosLosMuebles.length > 0) {
-            // filtra en frontend 
-            const filtered = todosLosMuebles.filter(mueble => {  
-                const nombre = mueble.nombre?.toLowerCase() || ''; // Validación con ?. para campos que pueden ser undefined
-                const descripcion = mueble.descripcion?.toLowerCase() || '';
-                const etiqueta = mueble.etiqueta?.toLowerCase() || '';
+            // filtra en frontend
+            const filtered = todosLosMuebles.filter((mueble) => {
+                const nombre = mueble.descripcion.split(' ')[0].toLowerCase() || ''; // Validación con ?. para campos que pueden ser undefined
+                const descripcion = mueble.descripcion.toLowerCase() || '';
+                const etiqueta = mueble.etiqueta.toLowerCase() || '';
                 const queryLower = query.toLowerCase();
 
                 return (
@@ -44,27 +47,22 @@ export default function Busqueda() {
                 );
             });
             setResultados(filtered);
-            console.log("Búsqueda:", query, "Resultados:", filtered);
+            console.log('Búsqueda:', query, 'Resultados:', filtered);
         } else {
             setResultados([]);
         }
     }, [location.search, todosLosMuebles]);
 
-    const formatearPrecio = (precio: number) => {
-        return new Intl.NumberFormat('es-AR', {
-            style: 'currency',
-            currency: 'ARS',
-        }).format(precio);
-    };
-
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">
-                {termino ? `Resultados para: "${termino}"` : "Buscar productos"}
+                {termino ? `Resultados para: "${termino}"` : 'Buscar productos'}
             </h1>
 
             {resultados.length === 0 && termino ? (
-                <p className="text-gray-600">No se encontraron resultados para "{termino}"</p>
+                <p className="text-gray-600">
+                    No se encontraron resultados para "{termino}"
+                </p>
             ) : resultados.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {resultados.map((mueble: Mueble) => (
@@ -76,7 +74,7 @@ export default function Busqueda() {
                             <div className="relative overflow-hidden">
                                 <img
                                     src={mueble.imagenes?.[0] || '/imagenes/placeholder.jpg'}
-                                    alt={mueble.nombre}
+                                    alt={mueble.descripcion}
                                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
@@ -91,7 +89,7 @@ export default function Busqueda() {
                             {/* Contenido */}
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                    {mueble.nombre}
+                                    {mueble.descripcion.split(' ')[0] + ' ' + mueble.descripcion.split(' ')[2]}
                                 </h3>
 
                                 <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
@@ -101,7 +99,7 @@ export default function Busqueda() {
                                 {/* Precio */}
                                 <div className="mb-3">
                                     <span className="text-xl font-bold text-gray-900">
-                                        {formatearPrecio(mueble.precioUnitario)}
+                                        {formatCurrency(mueble.precioUnitario)}
                                     </span>
                                 </div>
 
@@ -114,7 +112,18 @@ export default function Busqueda() {
 
                                 {/* Botones */}
                                 <div className="flex gap-2">
-                                    <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm">
+                                    <button
+                                        onClick={() =>
+                                            addItem({
+                                                id: mueble.id,
+                                                title: mueble.descripcion,
+                                                price: mueble.precioUnitario,
+                                                quantity: 1,
+                                                image: mueble.imagenes?.[0],
+                                            })
+                                        }
+                                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm"
+                                    >
                                         Carrito
                                     </button>
                                     <Link
