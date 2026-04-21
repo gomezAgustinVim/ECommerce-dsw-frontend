@@ -44,7 +44,7 @@ const Login = () => {
           telefono,
           dni,
           usuario,
-          rol: "user",
+          rol: "cliente",
           fondos: 0,
         });
 
