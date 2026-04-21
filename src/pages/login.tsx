@@ -21,7 +21,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // validaciones 
+      // validaciones
       if (!email || !password) {
         setGlobalError("Todos los campos son obligatorios");
         setLoading(false);
@@ -51,20 +51,27 @@ const Login = () => {
         alert("¡Registro exitoso!");
         setIsRegister(false); // cambia a login despues del registro
       } else {
-        const response = await api.post("/clientes/login", {
+        const response = await api.post("/auth/login", {
           email,
           contrasenia: password,
         });
-        localStorage.setItem("clienteId", JSON.stringify(response.data.data.id));
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem(
+          "clienteId",
+          JSON.stringify(response.data.id ?? null),
+        );
+        localStorage.setItem("rol", response.data.rol); // guardamos rol por si lo uso despues
+
         alert("¡Inicio de sesión exitoso!");
         window.location.href = "/";
-        /* window.location.reload(); */
       }
     } catch (err: any) {
       if (err.response && err.response.status === 401) {
         setGlobalError("Email o contraseña incorrecta");
       } else if (err.response && err.response.status === 400) {
-        setGlobalError("Solicitud inválida. Por favor, verifica que los datos ingresados sean correctos.");
+        setGlobalError(
+          "Solicitud inválida. Por favor, verifica que los datos ingresados sean correctos.",
+        );
       } else {
         setGlobalError("Error al conectar con el servidor");
       }
@@ -72,8 +79,7 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  }
-
+  };
 
   return (
     <div
@@ -222,16 +228,19 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 rounded-xl font-semibold text-black mt-4 transition-all ${loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
-            }`}
+          className={`w-full py-3 rounded-xl font-semibold text-black mt-4 transition-all ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
+          }`}
         >
           {loading ? "Cargando..." : isRegister ? "Registrarse" : "Entrar"}
         </button>
 
         {/* enlace para cambiar modo */}
-        <p className={`text-sm text-center text-gray-600 ${isRegister ? 'mt-8' : 'mt-4'}`}>
+        <p
+          className={`text-sm text-center text-gray-600 ${isRegister ? "mt-8" : "mt-4"}`}
+        >
           {isRegister ? "¿Ya tenés una cuenta?" : "¿No tenés cuenta?"}{" "}
           <button
             type="button"
