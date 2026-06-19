@@ -9,9 +9,7 @@ vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 
-// ─────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────
+// wrapper que evita repetir el render en cada test
 const renderSearchBar = (props = {}) =>
   render(<SearchBar {...props} />);
 
@@ -19,9 +17,8 @@ beforeEach(() => {
   mockNavigate.mockClear();
 });
 
-// ─────────────────────────────────────────────
-// 1. Renderizado
-// ─────────────────────────────────────────────
+// Renderizado
+
 describe("SearchBar – renderizado", () => {
   it("muestra el input con el placeholder correcto", () => {
     renderSearchBar();
@@ -41,9 +38,7 @@ describe("SearchBar – renderizado", () => {
   });
 });
 
-// ─────────────────────────────────────────────
-// 2. Interacción con el input
-// ─────────────────────────────────────────────
+// simula el input
 describe("SearchBar – escritura en el input", () => {
   it("actualiza el valor mientras el usuario escribe", () => {
     renderSearchBar();
@@ -55,9 +50,8 @@ describe("SearchBar – escritura en el input", () => {
   });
 });
 
-// ─────────────────────────────────────────────
-// 3. Comportamiento del submit
-// ─────────────────────────────────────────────
+// verifica si mockNavigate se llama con la URL correcta al hacer submit
+
 describe("SearchBar – submit del formulario", () => {
   it("navega a /busqueda?q=... al hacer submit con texto válido", () => {
     renderSearchBar();
@@ -123,9 +117,9 @@ describe("SearchBar – submit del formulario", () => {
   });
 });
 
-// ─────────────────────────────────────────────
-// 4. Prop onCloseMenu
-// ─────────────────────────────────────────────
+
+// cierra el menú si se pasa onCloseMenu y el submit es válido, no lo llama si el input esta vacio o solo espacios, y no lanza error si onCloseMenu no se pasa (es opcional)
+
 describe("SearchBar – prop onCloseMenu", () => {
   it("llama a onCloseMenu después de un submit válido", () => {
     const onCloseMenu = vi.fn();
@@ -159,9 +153,7 @@ describe("SearchBar – prop onCloseMenu", () => {
   });
 });
 
-// ─────────────────────────────────────────────
-// 5. Prop className
-// ─────────────────────────────────────────────
+// verifica que la clase llegue al form y que siempre esté la clase base 
 describe("SearchBar – prop className", () => {
   it("aplica la className al formulario cuando se pasa", () => {
     const { container } = renderSearchBar({ className: "mi-clase-custom" });
