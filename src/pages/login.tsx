@@ -56,11 +56,6 @@ const Login = () => {
           contrasenia: password,
         });
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem(
-          "clienteId",
-          JSON.stringify(response.data.id ?? null),
-        );
-        localStorage.setItem("rol", response.data.rol); // guardamos rol por si lo uso despues
 
         alert("¡Inicio de sesión exitoso!");
         window.location.href = "/";

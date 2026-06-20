@@ -16,13 +16,13 @@ export default function Carrito() {
   const total = subtotal + shipping;
   const navigate = useNavigate();
 
-  const clienteId = JSON.parse(localStorage.getItem("clienteId") || "[]");
-  // const clienteId = 2; // este id sirve para probar, si no te logueaste
-  // descomentalo
-
   const finalizarCompra = async () => {
+    if (items.length === 0) {
+      alert("El carrito está vacío");
+      return;
+    }
+
     const payload = {
-      cliente: clienteId,
       items: items.map((i) => ({
         mueble: i.id,
         cantidad: i.quantity,
@@ -31,11 +31,21 @@ export default function Carrito() {
 
     try {
       await api.post("/pedidos", payload);
+
       clearCart();
+
       alert("✅ Pedido creado con éxito");
+
       navigate("/pedidos");
-    } catch (err) {
-      console.error(err + " ❌ Error al crear pedido");
+    } catch (err: any) {
+      console.error("❌ Error al crear pedido", err);
+
+      if (err.response?.status === 401) {
+        alert("Debes iniciar sesión para realizar una compra");
+        navigate("/login");
+      } else {
+        alert(err.response?.data?.message || "❌ Error al crear pedido");
+      }
     }
   };
 

@@ -10,25 +10,18 @@ export default function Perfil() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCliente = async () => {
+    const fetchPerfil = async () => {
       try {
-        const clienteId = JSON.parse(localStorage.getItem("clienteId") || "null");
-        if (!clienteId || clienteId === "null") {
-          setError("No hay una sesión activa. Inicia sesión para ver tu perfil.");
-          setLoading(false);
-          return;
-        } else {
-          const res = await api.get(`/clientes/${clienteId}`);
-          setCliente(res.data.data);
-        }
+        const res = await api.get("/clientes/perfil");
+        setCliente(res.data.data);
       } catch (err: any) {
-        setError(err.response?.data?.message || "Error al obtener los datos del cliente");
+        setError(err.response?.data?.message || "Error al obtener el perfil");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCliente();
+    fetchPerfil();
   }, []);
 
   if (loading) {
@@ -64,7 +57,8 @@ export default function Perfil() {
 
         <div className="flex flex-col gap-3 text-gray-700 text-sm md:text-base">
           <div>
-            <span className="font-semibold">Nombre:</span> {cliente.nombre} {cliente.apellido}
+            <span className="font-semibold">Nombre:</span> {cliente.nombre}{" "}
+            {cliente.apellido}
           </div>
           <div>
             <span className="font-semibold">Email:</span> {cliente.email}
@@ -73,7 +67,8 @@ export default function Perfil() {
             <span className="font-semibold">Teléfono:</span> {cliente.telefono}
           </div>
           <div>
-            <span className="font-semibold">Dirección:</span> {cliente.direccion}
+            <span className="font-semibold">Dirección:</span>{" "}
+            {cliente.direccion}
           </div>
         </div>
 
@@ -87,7 +82,7 @@ export default function Perfil() {
 
           <button
             onClick={() => {
-              localStorage.removeItem("clienteId");
+              localStorage.removeItem("token");
               window.location.href = "/";
             }}
             className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-md"
