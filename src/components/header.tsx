@@ -74,16 +74,28 @@ export default function Header() {
             Contacto
           </Link>
 
-          {/* CARRITO */}
+          {/* MIS PEDIDOS  */}
+          {isAuthenticated && (
+            <Link
+              to="/pedidos"
+              onClick={closeAll}
+              className="px-4 py-2 hover:text-blue-300 font-medium"
+            >
+              Mis Pedidos
+            </Link>
+          )}
+
           <Link
-            to="/carrito"
+            to={isAuthenticated ? "/carrito" : "/login"}
             onClick={closeAll}
             className="flex justify-start md:relative px-4 py-2 text-xl"
           >
             🛒
-            <span className="md:absolute md:-top-1 md:-right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-              {count}
-            </span>
+            {isAuthenticated && (
+              <span className="md:absolute md:-top-1 md:-right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                {count}
+              </span>
+            )}
           </Link>
 
           {/* login */}
@@ -117,3 +129,4 @@ export default function Header() {
     </header>
   );
 }
+
