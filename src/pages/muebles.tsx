@@ -1,11 +1,12 @@
 import api from "../api/axiosInstance";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { type Mueble } from "../types.tsx";
 import { formatCurrency } from "../utils/formatCurrency";
 import { useCarrito } from "../context/carritoContext";
 
 export default function TodosLosMuebles() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [todosLosMuebles, setTodosLosMuebles] = useState<Mueble[]>([]);
   const [etiquetas, setEtiquetas] = useState<string[]>([]);
   const [etiquetaSeleccionada, setEtiquetaSeleccionada] =
@@ -13,6 +14,11 @@ export default function TodosLosMuebles() {
   const [mueblesFiltrados, setMueblesFiltrados] = useState<Mueble[]>([]);
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { addItem } = useCarrito();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, []);
 
   const fetchTodosLosMuebles = async () => {
     try {
@@ -175,15 +181,19 @@ export default function TodosLosMuebles() {
                 {/* botones */}
                 <div className="flex gap-2">
                   <button
-                    onClick={() =>
-                      addItem({
-                        id: mueble.id,
-                        title: mueble.descripcion,
-                        price: mueble.precioUnitario,
-                        quantity: 1,
-                        image: mueble.imagenes?.[0],
-                      })
-                    }
+                    onClick={() => {
+                      if (isAuthenticated) {
+                        addItem({
+                          id: mueble.id,
+                          title: mueble.descripcion,
+                          price: mueble.precioUnitario,
+                          quantity: 1,
+                          image: mueble.imagenes?.[0],
+                        });
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
                     className="flex-1 bg-blue-600
                                     hover:bg-blue-700 text-white py-2 px-3
                                     rounded-lg transition-colors duration-200

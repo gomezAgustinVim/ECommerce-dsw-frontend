@@ -1,12 +1,18 @@
 import api from "../api/axiosInstance";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { type Mueble } from "../types.tsx";
 import { useCarrito } from "../context/carritoContext";
 
 export default function MueblesDestacados() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mueblesDestacados, setMueblesDestacados] = useState<Mueble[]>([]);
   const { addItem } = useCarrito();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, []);
 
   const fetchMueblesDestacados = async () => {
     try {
@@ -100,17 +106,21 @@ export default function MueblesDestacados() {
                 </div>
 
                 {/* Botones de acción */}
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <button
-                    onClick={() =>
-                      addItem({
-                        id: mueble.id,
-                        title: mueble.descripcion,
-                        price: mueble.precioUnitario,
-                        quantity: 1,
-                        image: mueble.imagenes?.[0],
-                      })
-                    }
+                    onClick={() => {
+                      if (isAuthenticated) {
+                        addItem({
+                          id: mueble.id,
+                          title: mueble.descripcion,
+                          price: mueble.precioUnitario,
+                          quantity: 1,
+                          image: mueble.imagenes?.[0],
+                        });
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
                     className="px-6 py-2 bg-red-500 text-white font-medium
                                         rounded-lg shadow hover:bg-red-600 transition w-full
                                         sm:w-auto"
