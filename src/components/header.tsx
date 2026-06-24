@@ -65,15 +65,6 @@ export default function Header() {
             Productos
           </Link>
 
-          {/* LINK CONTACTO */}
-          <Link
-            to="https://github.com/gomezAgustinVim/tpDSWproposalGomezPitavinoBertottiZajarias"
-            onClick={closeAll}
-            className="px-4 py-2 hover:text-blue-300 font-medium"
-          >
-            Contacto
-          </Link>
-
           {/* MIS PEDIDOS  */}
           {isAuthenticated && (
             <Link
@@ -84,6 +75,15 @@ export default function Header() {
               Mis Pedidos
             </Link>
           )}
+
+          {/* LINK CONTACTO */}
+          <Link
+            to="https://github.com/gomezAgustinVim/tpDSWproposalGomezPitavinoBertottiZajarias"
+            onClick={closeAll}
+            className="px-4 py-2 hover:text-blue-300 font-medium"
+          >
+            Contacto
+          </Link>
 
           <Link
             to={isAuthenticated ? "/carrito" : "/login"}
