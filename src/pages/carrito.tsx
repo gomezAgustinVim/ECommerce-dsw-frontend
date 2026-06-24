@@ -4,11 +4,6 @@ import { useCarrito } from "../context/carritoContext";
 import { formatCurrency } from "../utils/formatCurrency";
 
 export default function Carrito() {
-  // const [items, setItems] = useState<CartItem[]>([
-  //     { id: 1, title: "Producto 1", price: 1200, quantity: 1, image: "/imagenes/producto1.png" },
-  //     { id: 2, title: "Producto 2", price: 850, quantity: 2, image: "/imagenes/producto2.png" },
-  // ]);
-
   const { items, updateQty, removeItem, clearCart } = useCarrito();
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
