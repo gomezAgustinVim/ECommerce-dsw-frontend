@@ -154,9 +154,7 @@ export default function TodosLosMuebles() {
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                   <Link to={`/muebles/${mueble.id}`}>
-                    {mueble.descripcion.split(" ")[0] +
-                      " " +
-                      mueble.descripcion.split(" ")[2]}
+                    {mueble.descripcion}
                   </Link>
                 </h3>
 
