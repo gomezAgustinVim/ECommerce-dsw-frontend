@@ -80,15 +80,15 @@ const Login = () => {
     <div
       className="
         flex flex-col items-center justify-center
-        min-h-[calc(100vh-5.5rem)]      
+        min-h-[calc(100vh-5.5rem)]
         px-4 pb-8 bg-gray-50
       "
     >
       <form
         onSubmit={handleSubmit}
         className="
-      bg-white p-6 sm:p-8 rounded-2xl shadow-md 
-        w-full max-w-sm sm:max-w-md md:max-w-lg 
+      bg-white p-6 sm:p-8 rounded-2xl shadow-md
+        w-full max-w-sm sm:max-w-md md:max-w-lg
         transition-all"
       >
         <h2 className="text-xl font-semibold mb-6 text-center">
