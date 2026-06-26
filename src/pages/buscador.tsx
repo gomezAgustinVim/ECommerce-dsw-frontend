@@ -89,7 +89,7 @@ export default function Busqueda() {
                             {/* Contenido */}
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                                    {mueble.descripcion.split(' ')[0] + ' ' + mueble.descripcion.split(' ')[2]}
+                                    {mueble.descripcion}
                                 </h3>
 
                                 <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
