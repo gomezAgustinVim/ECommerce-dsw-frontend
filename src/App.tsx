@@ -11,7 +11,6 @@ import Footer from "./components/footer";
 import Muebles from "./pages/muebles";
 import Busqueda from "./pages/buscador";
 import Perfil from "./pages/perfil";
-import Pagos from "./pages/pagos.tsx";
 
 function App() {
   return (
@@ -28,7 +27,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/busqueda" element={<Busqueda />} />
-          <Route path="/pagos" element={<Pagos />} />
         </Routes>
       </main>
 
