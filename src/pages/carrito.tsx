@@ -33,8 +33,7 @@ export default function Carrito() {
 
       navigate("/pedidos");
     } catch (err: any) {
-      console.error("❌ Error al crear pedido", err);
-
+      console.error("❌ Error al crear pedido", err.config?.url);
       if (err.response?.status === 401) {
         alert("Debes iniciar sesión para realizar una compra");
         navigate("/login");
