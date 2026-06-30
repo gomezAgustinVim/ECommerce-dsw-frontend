@@ -6,9 +6,11 @@ import { useCarrito } from "../context/carritoContext";
 export default function Header() {
   const [openMenu, setOpenMenu] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("token"));
+    setIsAdmin(localStorage.getItem("rol") === "admin");
   }, []);
 
   const handleLogout = () => {
@@ -65,14 +67,14 @@ export default function Header() {
             Productos
           </Link>
 
-          {/* MIS PEDIDOS  */}
+          {/* PEDIDOS */}
           {isAuthenticated && (
             <Link
               to="/pedidos"
               onClick={closeAll}
               className="px-4 py-2 hover:text-blue-300 font-medium"
             >
-              Mis Pedidos
+              {isAdmin ? "Pedidos" : "Mis Pedidos"}
             </Link>
           )}
 
