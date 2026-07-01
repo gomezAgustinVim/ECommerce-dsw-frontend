@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import api from "../api/axiosInstance";
 import { formatCurrency } from "../utils/formatCurrency";
 
@@ -10,6 +10,16 @@ const ESTADOS = [
   "entregado",
   "cancelado",
 ] as const;
+
+type PedidoItem = {
+  cantidad: number;
+  subtotal: number;
+  mueble: { descripcion: string };
+};
+
+function getItems(ped: { items?: PedidoItem[] }): PedidoItem[] {
+  return Array.isArray(ped.items) ? ped.items : [];
+}
 
 function estadoBadgeClass(estado: string) {
   switch (estado) {
@@ -28,9 +38,11 @@ function estadoBadgeClass(estado: string) {
 
 export default function MisPedidos() {
   const isAdmin = localStorage.getItem("rol") === "admin";
+  const isFirstLoad = useRef(true);
 
   const [pedidos, setPedidos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<number | null>(null);
   const [pagandoId, setPagandoId] = useState<number | null>(null);
@@ -40,7 +52,11 @@ export default function MisPedidos() {
   const [estado, setEstado] = useState("");
 
   const fetchPedidos = useCallback(async () => {
-    setLoading(true);
+    if (isFirstLoad.current) {
+      setLoading(true);
+    } else {
+      setRefreshing(true);
+    }
     setError("");
     try {
       if (isAdmin) {
@@ -60,6 +76,8 @@ export default function MisPedidos() {
       console.error("No se pudieron cargar los pedidos", err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
+      isFirstLoad.current = false;
     }
   }, [isAdmin, fechaDesde, fechaHasta, estado]);
 
@@ -94,7 +112,7 @@ export default function MisPedidos() {
 
   return (
     <section className="max-w-4xl mx-auto p-4 sm:p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-900">
         {isAdmin ? "Pedidos" : "Mis Pedidos"}
       </h1>
 
@@ -102,10 +120,14 @@ export default function MisPedidos() {
         <div className="bg-white shadow rounded-lg p-4 mb-6 border border-gray-200">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="fecha-desde"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Fecha desde
               </label>
               <input
+                id="fecha-desde"
                 type="date"
                 value={fechaDesde}
                 onChange={(e) => setFechaDesde(e.target.value)}
@@ -113,10 +135,14 @@ export default function MisPedidos() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="fecha-hasta"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Fecha hasta
               </label>
               <input
+                id="fecha-hasta"
                 type="date"
                 value={fechaHasta}
                 onChange={(e) => setFechaHasta(e.target.value)}
@@ -124,10 +150,14 @@ export default function MisPedidos() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="estado-pedido"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Estado
               </label>
               <select
+                id="estado-pedido"
                 value={estado}
                 onChange={(e) => setEstado(e.target.value)}
                 className="w-full p-2 border border-gray-300 rounded-lg text-gray-900"
@@ -142,13 +172,17 @@ export default function MisPedidos() {
             </div>
             <div className="flex items-end">
               <button
+                type="button"
                 onClick={limpiarFiltros}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium text-gray-900"
               >
                 Limpiar filtros
               </button>
             </div>
           </div>
+          {refreshing && (
+            <p className="text-sm text-gray-500 mt-3">Actualizando...</p>
+          )}
         </div>
       )}
 
@@ -160,73 +194,85 @@ export default function MisPedidos() {
         </p>
       ) : (
         <div className="space-y-4">
-          {pedidos.map((ped) => (
-            <div
-              key={ped.id}
-              className="bg-white shadow rounded-lg p-4 border border-gray-200"
-            >
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-                <div className="space-y-1">
-                  <p className="text-sm text-gray-500">
-                    Pedido #{ped.id} —{" "}
-                    {new Date(ped.fechaHora).toLocaleDateString()}
-                  </p>
-                  {isAdmin && ped.usuario && (
-                    <p className="text-sm text-gray-700">
-                      Cliente: {ped.usuario.nombre} {ped.usuario.apellido} (
-                      {ped.usuario.email})
-                    </p>
-                  )}
-                  <span
-                    className={`px-2 py-1 text-xs font-semibold rounded-md ${estadoBadgeClass(ped.estado)}`}
-                  >
-                    {ped.estado.toUpperCase()}
-                  </span>
-                </div>
+          {pedidos.map((ped) => {
+            const items = getItems(ped);
 
-                <div className="flex items-center gap-4 mt-2 sm:mt-0">
-                  <p className="text-lg font-bold text-gray-900">
-                    {formatCurrency(ped.total)}
-                  </p>
-
-                  {!isAdmin && ped.estado === "pendiente" && (
-                    <button
-                      onClick={() => handlePagar(ped.id)}
-                      disabled={pagandoId === ped.id}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50"
-                    >
-                      {pagandoId === ped.id ? "Procesando..." : "Pagar"}
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <button
-                onClick={() => toggleExpand(ped.id)}
-                className="mt-3 text-sm hover:underline"
+            return (
+              <div
+                key={ped.id}
+                className="bg-white shadow rounded-lg p-4 border border-gray-200"
               >
-                {expanded === ped.id ? "Ocultar detalles" : "Ver detalles"}
-              </button>
-
-              {expanded === ped.id && (
-                <ul className="mt-3 space-y-2">
-                  {ped.items.map((item: any, idx: number) => (
-                    <li
-                      key={idx}
-                      className="flex justify-between text-sm bg-gray-50 p-2 rounded-lg"
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                  <div className="space-y-1">
+                    <p className="text-sm text-gray-500">
+                      Pedido #{ped.id} —{" "}
+                      {new Date(ped.fechaHora).toLocaleDateString()}
+                    </p>
+                    {isAdmin && ped.usuario && (
+                      <p className="text-sm text-gray-700">
+                        Cliente: {ped.usuario.nombre} {ped.usuario.apellido} (
+                        {ped.usuario.email})
+                      </p>
+                    )}
+                    <span
+                      className={`px-2 py-1 text-xs font-semibold rounded-md ${estadoBadgeClass(ped.estado)}`}
                     >
-                      <span>
-                        {item.mueble.descripcion} × {item.cantidad}
-                      </span>
-                      <span className="font-semibold">
-                        ${item.subtotal.toLocaleString()}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
+                      {ped.estado.toUpperCase()}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-4 mt-2 sm:mt-0">
+                    <p className="text-lg font-bold text-gray-900">
+                      {formatCurrency(ped.total)}
+                    </p>
+
+                    {!isAdmin && ped.estado === "pendiente" && (
+                      <button
+                        type="button"
+                        onClick={() => handlePagar(ped.id)}
+                        disabled={pagandoId === ped.id}
+                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50"
+                      >
+                        {pagandoId === ped.id ? "Procesando..." : "Pagar"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => toggleExpand(ped.id)}
+                  className="mt-3 text-sm text-blue-700 hover:underline"
+                >
+                  {expanded === ped.id ? "Ocultar detalles" : "Ver detalles"}
+                </button>
+
+                {expanded === ped.id && (
+                  <ul className="mt-3 space-y-2">
+                    {items.length === 0 ? (
+                      <li className="text-sm text-gray-500">
+                        Sin items en este pedido.
+                      </li>
+                    ) : (
+                      items.map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex justify-between text-sm text-gray-800 bg-gray-50 p-2 rounded-lg"
+                        >
+                          <span>
+                            {item.mueble.descripcion} x {item.cantidad}
+                          </span>
+                          <span className="font-semibold">
+                            {formatCurrency(Number(item.subtotal))}
+                          </span>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </section>
