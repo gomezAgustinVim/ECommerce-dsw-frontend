@@ -85,12 +85,14 @@ export default function TodosLosMuebles() {
             {menuAbierto && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
                 <div className="py-1">
+                  {/* Botón para seleccionar todas las categorías en productos */}
                   <button
                     onClick={() => {
                       setEtiquetaSeleccionada("todas");
                       setMenuAbierto(false);
                     }}
-                    className={`block w-full text-left px-4 py-2 text-sm ${
+                    // se aplica estilos de los botones de la pagina, por eso aparece redondeado como los otros botones, pero se le quita el borde redondeado con !rounded-none
+                    className={`block w-full text-left px-4 py-2 text-sm !rounded-none ${
                       etiquetaSeleccionada === "todas"
                         ? "bg-blue-100 text-white-700!"
                         : "text-gray-700 hover:bg-gray-100"
@@ -100,13 +102,15 @@ export default function TodosLosMuebles() {
                   </button>
 
                   {etiquetas.map((etiqueta: string) => (
+                    // cada botón de categoría, tambien se aplica estilos de los otros botones de la pagina
                     <button
                       key={etiqueta}
                       onClick={() => {
                         setEtiquetaSeleccionada(etiqueta);
                         setMenuAbierto(false);
                       }}
-                      className={`block w-full text-left px-4 py-2 text-sm ${
+                      // se aplica estilos, por eso aparece redondeado como los otros botones, pero se le quita el borde redondeado con !rounded-none
+                      className={`block w-full text-left px-4 py-2 text-sm !rounded-none ${
                         etiquetaSeleccionada === etiqueta
                           ? "bg-blue-100 text-blue-700"
                           : "text-gray-700 hover:bg-gray-100"
