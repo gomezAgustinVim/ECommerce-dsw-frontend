@@ -2,10 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 const images = [
-  "/imagenes/sillonPrincipal.png",
-  "/imagenes/mesaConSillas.png",
-  "/imagenes/promo1.png",
-  "/imagenes/promo2.png",
+  "/imagenes/carr-1.png",
+  "/imagenes/carr-2.png",
+  "/imagenes/carr-3.png",
 ];
 
 const beneficios = [
@@ -80,9 +79,7 @@ export default function Carrusell() {
         />
 
         {/* overlay oscuro para que el texto se lea bien */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-            background: "radial-gradient(ellipse 60% 80% at 25% 50%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.4) 40%, transparent 70%)"
-        }} />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-white/90 via-white/10 to-transparent" />
 
         {/* texto centrado a la izquierda */}
         <div className="relative z-10 flex flex-col justify-center h-full px-8 md:px-20 max-w-2xl">
