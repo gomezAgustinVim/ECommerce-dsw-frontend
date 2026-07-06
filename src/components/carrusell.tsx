@@ -79,16 +79,17 @@ export default function Carrusell() {
         />
 
         {/* overlay oscuro para que el texto se lea bien */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-white/90 via-white/10 to-transparent" />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-white/90 via-white/20 to-transparent" />
 
         {/* texto centrado a la izquierda */}
         <div className="relative z-10 flex flex-col justify-center h-full px-8 md:px-20 max-w-2xl">
-          <h1 className="text-4xl md:text-6xl font-[800] text-gray-900 leading-tight tracking-tight"
-            >
-            Muebles
-            a tu alcance
-          </h1>
+            <h1 className="leading-tight tracking-tight !text-gray-900" >
+                <span className="block text-8xl md:text-7xl font-[800] tracking-wide ">Muebles</span>
+                <span className="block text-5xl md:text-6xl font-[500]">a tu alcance</span>
+            </h1>
+
           <p className="text-lg md:text-xl text-gray-700 mb-8">
+            <br/>
             Calidad garantizada y envíos a todo el país
           </p>
           <div className="flex gap-4 flex-wrap">
@@ -105,17 +106,17 @@ export default function Carrusell() {
         {/* flecha izquierda */}
         <span
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer select-none text-5xl text-white/60 hover:text-white transition-all duration-300 z-10"
+          className="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer select-none text-5xl text-white/60 hover:text-white transition-all duration-300 z-20"
         >
-          
+          ‹  
         </span>
 
         {/* flecha derecha */}
         <span
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer select-none text-5xl text-white/60 hover:text-white transition-all duration-300 z-10"
+          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer select-none text-5xl text-white/60 hover:text-white transition-all duration-300 z-20"
         >
-          
+          ›
         </span>
 
         {/* puntos de navegación */}
