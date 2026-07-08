@@ -47,3 +47,6 @@ Thumbs.db
 dist/**/*
 dist
 dist-ssr
+
+# tests logs
+test-results
