@@ -41,6 +41,7 @@ export type Mueble = BaseType & {
   stock: number;
   precioUnitario: number;
   imagenes: string[];
+  activo?: boolean;
   categoria: Categoria;
   material: Material;
 };

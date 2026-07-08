@@ -15,6 +15,7 @@ export default function TodosLosMuebles() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { addItem } = useCarrito();
   const navigate = useNavigate();
+  const isAdmin = localStorage.getItem("rol") === "admin";
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("token"));
@@ -182,27 +183,38 @@ export default function TodosLosMuebles() {
 
                 {/* botones */}
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => {
-                      if (isAuthenticated) {
-                        addItem({
-                          id: mueble.id,
-                          title: mueble.descripcion,
-                          price: mueble.precioUnitario,
-                          quantity: 1,
-                          image: mueble.imagenes?.[0],
-                        });
-                      } else {
-                        navigate("/login");
-                      }
-                    }}
-                    className="flex-1 bg-blue-600
+                  {/* si es admin */}
+                  {isAdmin ? (
+                    <Link
+                      to={`/muebles/${mueble.id}?edit=true`}
+                      className="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm"
+                    >
+                      Editar mueble
+                    </Link>
+                  ) : (
+                    /* si es usuario */
+                    <button
+                      onClick={() => {
+                        if (isAuthenticated) {
+                          addItem({
+                            id: mueble.id,
+                            title: mueble.descripcion,
+                            price: mueble.precioUnitario,
+                            quantity: 1,
+                            image: mueble.imagenes?.[0],
+                          });
+                        } else {
+                          navigate("/login");
+                        }
+                      }}
+                      className="flex-1 bg-blue-600
                                     hover:bg-blue-700 text-white py-2 px-3
                                     rounded-lg transition-colors duration-200
                                     font-medium text-sm"
-                  >
-                    Carrito
-                  </button>
+                    >
+                      Carrito
+                    </button>
+                  )}
                   <Link
                     to={`/muebles/${mueble.id}`}
                     className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-[#32368b]! py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm"
