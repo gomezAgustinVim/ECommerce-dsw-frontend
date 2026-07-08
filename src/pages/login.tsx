@@ -5,20 +5,33 @@ const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [dni, setDni] = useState("");
-  const [usuario, setUsuario] = useState("");
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState("");
+
+  const [form, setForm] = useState({
+    confirmPassword: "",
+    nombre: "",
+    apellido: "",
+    direccion: "",
+    telefono: "",
+    dni: "",
+    usuario: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setGlobalError("");
     setLoading(true);
+
+    const {
+      confirmPassword,
+      nombre,
+      apellido,
+      direccion,
+      telefono,
+      dni,
+      usuario,
+    } = form;
 
     try {
       // validaciones
@@ -106,14 +119,18 @@ const Login = () => {
 
         {/* mail */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Correo electrónico
           </label>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
             placeholder="ejemplo@correo.com"
             required
             disabled={loading}
@@ -122,110 +139,100 @@ const Login = () => {
 
         {/* password */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Contraseña
           </label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
             placeholder="Ingresa tu contraseña"
-            required
             minLength={8}
             maxLength={64}
+            required
             disabled={loading}
           />
         </div>
 
-        {/* Campos extra solo en registrarse */}
         {isRegister && (
-          <div className="mt-6 space-y-4 border-t border-gray-200 pt-6">
-            {/* Confirmar contraseña */}
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Confirmar contraseña
-              </label>
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Repite tu contraseña"
-                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                required
-                minLength={8}
-                maxLength={64}
-                disabled={loading}
-              />
-            </div>
-
-            {/* Nombre y Apellido en fila */}
-            <div className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                placeholder="Nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                required
-                minLength={2}
-              />
-
-              <input
-                type="text"
-                placeholder="Apellido"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
-                className="p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                required
-                minLength={2}
-              />
-            </div>
-
-            {/* Otros campos */}
-            <input
-              type="text"
-              placeholder="Dirección"
-              value={direccion}
-              onChange={(e) => setDireccion(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-              required
-            />
-            <input
-              type="tel"
-              placeholder="Teléfono"
-              value={telefono}
-              onChange={(e) => setTelefono(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-              required
-              minLength={8}
-            />
-            <input
-              type="text"
-              placeholder="DNI"
-              value={dni}
-              onChange={(e) => setDni(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-              required
-              minLength={8}
-            />
-            <input
-              type="text"
-              placeholder="Nombre de usuario"
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-              required
-              minLength={3}
-            />
+          <div className="mt-6 space-y-4 border-t border-gray-200 pt-6 text-sm">
+            {[
+              {
+                label: "Confirmar contraseña",
+                key: "confirmPassword",
+                type: "password",
+                minLength: 8,
+                maxLength: 64,
+              },
+              {
+                label: "Nombre",
+                key: "nombre",
+                type: "text",
+                minLength: 2,
+              },
+              {
+                label: "Apellido",
+                key: "apellido",
+                type: "text",
+                minLength: 2,
+              },
+              {
+                label: "Dirección",
+                key: "direccion",
+                type: "text",
+              },
+              {
+                label: "Teléfono",
+                key: "telefono",
+                type: "tel",
+                minLength: 8,
+              },
+              {
+                label: "DNI",
+                key: "dni",
+                type: "text",
+                minLength: 8,
+              },
+              {
+                label: "Nombre de usuario",
+                key: "usuario",
+                type: "text",
+                minLength: 3,
+              },
+            ].map(({ label, key, type, minLength, maxLength }) => (
+              <div key={key}>
+                <label
+                  htmlFor={key}
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  {label}
+                </label>
+                <input
+                  key={key}
+                  type={type}
+                  value={form[key as keyof typeof form]}
+                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  placeholder={label}
+                  required
+                  minLength={minLength}
+                  maxLength={maxLength}
+                  disabled={loading}
+                  className="w-full text-gray-900 border border-gray-300 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                />
+              </div>
+            ))}
           </div>
         )}
 
-        {/* botón */}
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 rounded-xl font-semibold text-black mt-4 transition-all ${
+          className={`w-full py-3 rounded-xl font-semibold text-white mt-6 transition-all ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg"
@@ -235,10 +242,10 @@ const Login = () => {
         </button>
 
         {/* enlace para cambiar modo */}
-        <p
-          className={`text-sm text-center text-gray-600 ${isRegister ? "mt-8" : "mt-4"}`}
-        >
-          {isRegister ? "¿Ya tenés una cuenta?" : "¿No tenés cuenta?"}{" "}
+        <div className="flex items-center justify-center gap-6 mt-4">
+          <p className={"text-sm text-gray-800"}>
+            {isRegister ? "¿Ya tenés una cuenta?" : "¿No tenés cuenta?"}
+          </p>
           <button
             type="button"
             onClick={() => {
@@ -246,11 +253,11 @@ const Login = () => {
               setGlobalError("");
             }}
             disabled={loading}
-            className="text-blue-600 hover:underline font-medium ml-1"
+            className="text-sm text-white hover:underline font-medium ml-1"
           >
             {isRegister ? "Iniciar sesión" : "Registrate"}
           </button>
-        </p>
+        </div>
       </form>
     </div>
   );
