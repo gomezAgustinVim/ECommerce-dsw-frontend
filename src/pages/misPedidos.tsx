@@ -46,7 +46,9 @@ export default function MisPedidos() {
   const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<number | null>(null);
   const [pagandoId, setPagandoId] = useState<number | null>(null);
-  const [actualizandoEstadoId, setActualizandoEstadoId] = useState<number | null>(null);
+  const [actualizandoEstadoId, setActualizandoEstadoId] = useState<
+    number | null
+  >(null);
 
   const [fechaDesde, setFechaDesde] = useState("");
   const [fechaHasta, setFechaHasta] = useState("");
@@ -99,21 +101,35 @@ export default function MisPedidos() {
     }
   };
 
-  const handleCambiarEstado = async (pedidoId: number, estadoActual: string) => {
+  // Corregir el body del patch
+  const handleCambiarEstado = async (
+    pedidoId: number,
+    estadoActual: string,
+  ) => {
     if (!isAdmin) return;
-
     const siguienteEstado =
       estadoActual === "pendiente" ? "confirmado" : "enviado";
-
     try {
       setActualizandoEstadoId(pedidoId);
-      await api.patch(`/pedidos/${pedidoId}/estado`, { estado: siguienteEstado });
+      await api.patch(`/pedidos/${pedidoId}/estado`, {
+        nuevoEstado: siguienteEstado,
+      }); // ← fix
       await fetchPedidos();
     } catch (err: any) {
-      console.error("Error al actualizar el estado del pedido", err);
       alert("No se pudo actualizar el estado del pedido.");
     } finally {
       setActualizandoEstadoId(null);
+    }
+  };
+
+  // Agregar cancelar pedido
+  const handleCancelar = async (pedidoId: number) => {
+    if (!confirm("¿Cancelar este pedido?")) return;
+    try {
+      await api.patch(`/pedidos/${pedidoId}/cancelar`);
+      await fetchPedidos();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "No se pudo cancelar el pedido.");
     }
   };
 
@@ -256,11 +272,26 @@ export default function MisPedidos() {
                       </button>
                     )}
 
-                    {isAdmin &&
-                      (ped.estado === "pendiente" || ped.estado === "pagado") && (
+                    {!isAdmin &&
+                      (ped.estado === "pendiente" ||
+                        ped.estado === "confirmado") && (
                         <button
                           type="button"
-                          onClick={() => handleCambiarEstado(ped.id, ped.estado)}
+                          onClick={() => handleCancelar(ped.id)}
+                          className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-lg"
+                        >
+                          Cancelar
+                        </button>
+                      )}
+
+                    {isAdmin &&
+                      (ped.estado === "pendiente" ||
+                        ped.estado === "pagado") && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleCambiarEstado(ped.id, ped.estado)
+                          }
                           disabled={actualizandoEstadoId === ped.id}
                           className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg disabled:opacity-50"
                         >
