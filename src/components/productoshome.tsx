@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { type Mueble } from "../types.tsx";
 import { useCarrito } from "../context/carritoContext";
+import FavoriteButton from "./FavoriteButton";
 
 export default function MueblesDestacados() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,9 +22,8 @@ export default function MueblesDestacados() {
 
       console.log(res.data);
 
-      // filtro los productos por la id
-      const todosLosMuebles = res.data.data;
-      const primerosTres = todosLosMuebles.slice(0, 3); // agarro los primeros 3
+      const todosLosMuebles = res.data.data.filter((m: Mueble) => m.activo !== false);
+      const primerosTres = todosLosMuebles.slice(0, 3);
 
       setMueblesDestacados(primerosTres);
     } catch (err) {
@@ -72,13 +72,17 @@ export default function MueblesDestacados() {
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
+                <div className="absolute top-4 right-4">
+                  <FavoriteButton mueble={mueble} />
+                </div>
+
                 {/* Badge de etiqueta */}
-                <div className="absolute top-4 right-4 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                <div className="absolute top-4 left-4 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
                   {mueble.etiqueta}
                 </div>
 
                 {/* Badge de Destacado */}
-                <div className="absolute top-4 left-4 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-medium">
+                <div className="absolute bottom-4 left-4 bg-yellow-500 text-white px-2 py-1 rounded text-xs font-medium">
                   Destacado
                 </div>
               </div>

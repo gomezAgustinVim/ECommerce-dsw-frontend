@@ -4,6 +4,7 @@ import api from "../api/axiosInstance";
 import { useCarrito } from "../context/carritoContext";
 import { formatCurrency } from "../utils/formatCurrency";
 import { type Categoria, type Material, type Mueble } from "../types";
+import FavoriteButton from "../components/FavoriteButton";
 
 type MuebleForm = {
   descripcion: string;
@@ -386,7 +387,10 @@ export default function MuebleDetail() {
               {mueble.descripcion}
             </h1>
 
-            <div className="flex flex-col items-center gap-3 mb-6">
+            <div className="flex flex-col items-center gap-3 mb-6 relative">
+              <div className="absolute top-0 right-0">
+                {mueble && <FavoriteButton mueble={mueble} />}
+              </div>
               {mueble.imagenes.length > 1 ? (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {mueble.imagenes.map((i, idx) => (

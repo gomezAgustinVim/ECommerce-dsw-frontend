@@ -1,81 +1,47 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import api from '../api/axiosInstance';
-import { useCarrito } from '../context/carritoContext';
-import { formatCurrency } from '../utils/formatCurrency';
-import { type Mueble } from '../types';
-import FavoriteButton from '../components/FavoriteButton';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useFavoritos } from "../context/favoritosContext";
+import { useCarrito } from "../context/carritoContext";
+import { formatCurrency } from "../utils/formatCurrency";
+import FavoriteButton from "../components/FavoriteButton";
+import { type Mueble } from "../types";
 
-export default function Busqueda() {
-    const location = useLocation();
-    const [resultados, setResultados] = useState<Mueble[]>([]);
-    const [termino, setTermino] = useState('');
-    const [todosLosMuebles, setTodosLosMuebles] = useState<Mueble[]>([]);
+export default function Favoritos() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
+    const { favoritos } = useFavoritos();
     const { addItem } = useCarrito();
-    const isAdmin = localStorage.getItem('rol') === 'admin';
-
-    // Cargar todos los muebles al montar el componente
-    useEffect(() => {
-        const fetchTodosLosMuebles = async () => {
-            try {
-                const res = await api.get('/muebles');
-                const muebles = res.data.data.filter((m: Mueble) => m.activo !== false);
-                setTodosLosMuebles(muebles);
-            } catch (err) {
-                console.error('Error cargando muebles:', err);
-            }
-        };
-
-        fetchTodosLosMuebles();
-    }, []);
+    const isAdmin = localStorage.getItem("rol") === "admin";
 
     useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const query = searchParams.get('q') || '';
-        setTermino(query);
-
-        if (query && todosLosMuebles.length > 0) {
-            // filtra en frontend
-            const filtered = todosLosMuebles.filter((mueble) => {
-                const nombre = mueble.descripcion.split(' ')[0].toLowerCase() || ''; // Validación con ?. para campos que pueden ser undefined
-                const descripcion = mueble.descripcion.toLowerCase() || '';
-                const etiqueta = mueble.etiqueta.toLowerCase() || '';
-                const queryLower = query.toLowerCase();
-
-                return (
-                    nombre.includes(queryLower) ||
-                    descripcion.includes(queryLower) ||
-                    etiqueta.includes(queryLower)
-                );
-            });
-            setResultados(filtered);
-            console.log('Búsqueda:', query, 'Resultados:', filtered);
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/login");
         } else {
-            setResultados([]);
+            setIsAuthenticated(true);
         }
-    }, [location.search, todosLosMuebles]);
+    }, [navigate]);
+
+    if (!isAuthenticated) return null;
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6">
-                {termino ? `Resultados para: "${termino}"` : 'Buscar productos'}
-            </h1>
+            <h1 className="text-3xl font-bold mb-6">Mis Favoritos</h1>
 
-            {resultados.length === 0 && termino ? (
-                <p className="text-gray-600">
-                    No se encontraron resultados para "{termino}"
-                </p>
-            ) : resultados.length > 0 ? (
+            {favoritos.length === 0 ? (
+                <div className="text-center py-12">
+                    <p className="text-gray-600 text-lg mb-4">No tienes favoritos aún</p>
+                </div>
+            ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {resultados.map((mueble: Mueble) => (
+                    {favoritos.map((mueble: Mueble) => (
                         <div
                             key={mueble.id}
                             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 group"
                         >
-                            {/* foto del mueble */}
                             <div className="relative overflow-hidden">
                                 <img
-                                    src={mueble.imagenes?.[0] || '/imagenes/placeholder.jpg'}
+                                    src={mueble.imagenes?.[0] || "/imagenes/placeholder.jpg"}
                                     alt={mueble.descripcion}
                                     className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
@@ -84,7 +50,6 @@ export default function Busqueda() {
                                     <FavoriteButton mueble={mueble} />
                                 </div>
 
-                                {/* etiqueta */}
                                 {mueble.etiqueta && (
                                     <div className="absolute top-3 left-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
                                         {mueble.etiqueta}
@@ -92,42 +57,36 @@ export default function Busqueda() {
                                 )}
                             </div>
 
-                            {/* Contenido */}
                             <div className="p-4">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                     {mueble.descripcion}
                                 </h3>
 
                                 <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
-                                    {mueble.descripcion || 'Sin descripción'}
+                                    {mueble.descripcion || "Sin descripción"}
                                 </p>
 
-                                {/* Precio */}
                                 <div className="mb-3">
                                     <span className="text-xl font-bold text-gray-900">
                                         {formatCurrency(mueble.precioUnitario)}
                                     </span>
                                 </div>
 
-                                {/* Stock */}
                                 <div className="mb-3">
                                     <span className="text-xs text-gray-600">
                                         Stock: {mueble.stock} unidades
                                     </span>
                                 </div>
 
-                                {/* Botones */}
                                 <div className="flex gap-2">
-                                    {/* si es admin */}
                                     {isAdmin ? (
-                                        <Link
-                                            to={`/muebles/${mueble.id}?edit=true`}
+                                        <a
+                                            href={`/muebles/${mueble.id}?edit=true`}
                                             className="flex-1 text-center bg-blue-600 hover:bg-blue-700 text-white py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm"
                                         >
-                                            Editar mueble
-                                        </Link>
+                                            Editar
+                                        </a>
                                     ) : (
-                                        /* si es usuario */
                                         <button
                                             onClick={() =>
                                                 addItem({
@@ -143,19 +102,17 @@ export default function Busqueda() {
                                             Carrito
                                         </button>
                                     )}
-                                    <Link
-                                        to={`/muebles/${mueble.id}`}
+                                    <a
+                                        href={`/muebles/${mueble.id}`}
                                         className="flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-[#32368b]! py-2 px-3 rounded-lg transition-colors duration-200 font-medium text-sm"
                                     >
                                         Ver más
-                                    </Link>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-            ) : (
-                <p className="text-gray-600">Ingresa un término de búsqueda</p>
             )}
         </div>
     );

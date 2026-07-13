@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { type Mueble } from "../types.tsx";
 import { formatCurrency } from "../utils/formatCurrency";
 import { useCarrito } from "../context/carritoContext";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function TodosLosMuebles() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,11 +26,10 @@ export default function TodosLosMuebles() {
     try {
       const res = await api.get("/muebles");
       console.log(res.data);
-      const muebles = res.data.data;
+      const muebles = res.data.data.filter((m: Mueble) => m.activo !== false);
       setTodosLosMuebles(muebles);
       setMueblesFiltrados(muebles);
 
-      // Extraer etiquetas únicas de los muebles (en lugar de categorías)
       const etiquetasUnicas = [
         ...new Set(muebles.map((mueble: Mueble) => mueble.etiqueta)),
       ] as string[];
@@ -149,8 +149,12 @@ export default function TodosLosMuebles() {
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
 
+                <div className="absolute top-3 right-3">
+                  <FavoriteButton mueble={mueble} />
+                </div>
+
                 {/* etiqueta */}
-                <div className="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
+                <div className="absolute top-3 left-3 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
                   {mueble.etiqueta}
                 </div>
               </div>

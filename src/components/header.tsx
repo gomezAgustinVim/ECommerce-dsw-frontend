@@ -88,6 +88,14 @@ export default function Header() {
           </Link>
 
           <Link
+            to={isAuthenticated ? "/favoritos" : "/login"}
+            onClick={closeAll}
+            className="flex justify-start md:relative px-4 py-2 text-xl"
+          >
+            ❤️
+          </Link>
+
+          <Link
             to={isAuthenticated ? "/carrito" : "/login"}
             onClick={closeAll}
             className="flex justify-start md:relative px-4 py-2 text-xl"
