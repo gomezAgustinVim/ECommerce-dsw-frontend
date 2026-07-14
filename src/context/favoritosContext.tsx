@@ -42,7 +42,7 @@ export const FavoritosProvider = ({ children }: { children: React.ReactNode }) =
     const toggleFavorito = async (mueble: Mueble) => {
         try {
             const muebleId = Number(mueble.id);
-            console.log("Toggling favorite for mueble:", mueble.id, "parsed as:", muebleId);
+            //console.log("Toggling favorite for mueble:", mueble.id, "parsed as:", muebleId);
             
             if (!Number.isInteger(muebleId) || muebleId <= 0) {
                 console.error("ID de mueble inválido:", mueble.id, "parsed:", muebleId);
@@ -54,7 +54,7 @@ export const FavoritosProvider = ({ children }: { children: React.ReactNode }) =
                 setFavoritos(prev => prev.filter(m => m.id !== muebleId));
             } else {
                 const payload = { mueble: muebleId };
-                console.log("Sending payload:", payload, "typeof muebleId:", typeof muebleId);
+                //console.log("Sending payload:", payload, "typeof muebleId:", typeof muebleId);
                 await api.post(`/clientes/${clienteId}/favoritos/`, payload);
                 setFavoritos(prev => [...prev, mueble]);
             }
