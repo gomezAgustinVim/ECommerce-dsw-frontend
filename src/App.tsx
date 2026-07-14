@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/header";
 import Login from "./pages/login";
-import Carrito from "./pages/carrito"; // <-- importar el componente
+import Carrito from "./pages/carrito";
 import MisPedidos from "./pages/misPedidos";
 import Clientes from "./pages/clientes";
 import Home from "./pages/home";
@@ -11,6 +11,8 @@ import Footer from "./components/footer";
 import Muebles from "./pages/muebles";
 import Busqueda from "./pages/buscador";
 import Perfil from "./pages/perfil";
+import Favoritos from "./pages/favoritos";
+import AdminCrear from "./pages/adminCrear";
 
 function App() {
   return (
@@ -22,7 +24,9 @@ function App() {
           <Route path="/muebles" element={<Muebles />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/muebles/:id" element={<MuebleDetail />} />
-          <Route path="/carrito" element={<Carrito />} />{" "}
+          <Route path="/carrito" element={<Carrito />} />
+          <Route path="/admin/crear" element={<AdminCrear />} />
+          <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/pedidos" element={<MisPedidos />} />
           <Route path="/login" element={<Login />} />
           <Route path="/clientes" element={<Clientes />} />

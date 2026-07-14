@@ -88,12 +88,20 @@ export default function Header() {
           </Link>
 
           <Link
-            to={isAuthenticated ? "/carrito" : "/login"}
+            to={isAuthenticated ? "/favoritos" : "/login"}
             onClick={closeAll}
             className="flex justify-start md:relative px-4 py-2 text-xl"
           >
-            🛒
-            {isAuthenticated && (
+            ❤️
+          </Link>
+
+          <Link
+            to={isAdmin ? "/admin/crear" : isAuthenticated ? "/carrito" : "/login"}
+            onClick={closeAll}
+            className="flex justify-start md:relative px-4 py-2 text-xl"
+          >
+            {isAdmin ? "Crear" : "🛒"}
+            {!isAdmin && isAuthenticated && (
               <span className="md:absolute md:-top-1 md:-right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                 {count}
               </span>
