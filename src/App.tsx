@@ -12,6 +12,7 @@ import Muebles from "./pages/muebles";
 import Busqueda from "./pages/buscador";
 import Perfil from "./pages/perfil";
 import Favoritos from "./pages/favoritos";
+import AdminCrear from "./pages/adminCrear";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/muebles/:id" element={<MuebleDetail />} />
           <Route path="/carrito" element={<Carrito />} />
+          <Route path="/admin/crear" element={<AdminCrear />} />
           <Route path="/favoritos" element={<Favoritos />} />
           <Route path="/pedidos" element={<MisPedidos />} />
           <Route path="/login" element={<Login />} />

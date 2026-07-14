@@ -112,7 +112,7 @@ export default function MisPedidos() {
     try {
       setActualizandoEstadoId(pedidoId);
       await api.patch(`/pedidos/${pedidoId}/estado`, {
-        nuevoEstado: siguienteEstado,
+        estado: siguienteEstado,
       }); // ← fix
       await fetchPedidos();
     } catch (err: any) {
