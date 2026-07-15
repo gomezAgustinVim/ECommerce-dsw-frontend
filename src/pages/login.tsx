@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [globalError, setGlobalError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState({
     confirmPassword: "",
@@ -21,6 +22,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setGlobalError("");
+    setFieldErrors({});
     setLoading(true);
 
     const {
@@ -34,16 +36,22 @@ const Login = () => {
     } = form;
 
     try {
-      // validaciones
       if (!email || !password) {
-        setGlobalError("Todos los campos son obligatorios");
+        setFieldErrors((prev) => ({
+          ...prev,
+          ...(!email && { email: "El email es obligatorio" }),
+          ...(!password && { contrasenia: "La contraseña es obligatoria" }),
+        }));
         setLoading(false);
         return;
       }
 
       if (isRegister) {
         if (password !== confirmPassword) {
-          setGlobalError("Las contraseñas no coinciden");
+          setFieldErrors((prev) => ({
+            ...prev,
+            confirmPassword: "Las contraseñas no coinciden",
+          }));
           setLoading(false);
           return;
         }
@@ -76,16 +84,25 @@ const Login = () => {
         window.location.href = "/";
       }
     } catch (err: any) {
-      if (err.response && err.response.status === 401) {
+      if (err.response?.status === 400) {
+        const issues = err.response.data.errors;
+        if (Array.isArray(issues)) {
+          const errors: Record<string, string> = {};
+          issues.forEach((issue: any) => {
+            const field = issue.path[0];
+            if (field) errors[field] = issue.message;
+          });
+          setFieldErrors(errors);
+        } else {
+          setGlobalError("Solicitud inválida. Verificá los datos ingresados.");
+        }
+      } else if (err.response?.status === 401) {
         setGlobalError("Email o contraseña incorrecta");
-      } else if (err.response && err.response.status === 400) {
-        setGlobalError(
-          "Solicitud inválida. Por favor, verifica que los datos ingresados sean correctos.",
-        );
+      } else if (err.response?.status === 409) {
+        setGlobalError("El email ya está registrado");
       } else {
         setGlobalError("Error al conectar con el servidor");
       }
-      console.error("Error en login:", err);
     } finally {
       setLoading(false);
     }
@@ -106,7 +123,7 @@ const Login = () => {
         w-full max-w-sm sm:max-w-md md:max-w-lg
         transition-all"
       >
-        <h2 className="text-xl font-semibold mb-6 text-center">
+        <h2 className="text-xl font-semibold text-center">
           {isRegister ? "Registrarse" : "Iniciar sesión"}
         </h2>
 
@@ -117,50 +134,68 @@ const Login = () => {
           </div>
         )}
 
-        {/* mail */}
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Correo electrónico
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
-            placeholder="ejemplo@correo.com"
-            required
-            disabled={loading}
-          />
-        </div>
+        <div className="space-y-4 pt-6 text-sm">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Correo electrónico
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setFieldErrors((prev) => ({ ...prev, email: "" }));
+              }}
+              className={`w-full text-gray-900 border rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                fieldErrors.email ? "border-red-400" : "border-gray-300"
+              }`}
+              placeholder="ejemplo@correo.com"
+              required
+              disabled={loading}
+            />
+            {fieldErrors.email && (
+              <p className="text-red-500 text-xs mt-1">{fieldErrors.email}</p>
+            )}
+          </div>
 
-        {/* password */}
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Contraseña
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 transition-all"
-            placeholder="Ingresa tu contraseña"
-            minLength={8}
-            maxLength={64}
-            required
-            disabled={loading}
-          />
+          <div>
+            <label
+              htmlFor="contrasenia"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Contraseña
+            </label>
+            <input
+              id="contrasenia"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setFieldErrors((prev) => ({ ...prev, contrasenia: "" }));
+              }}
+              className={`w-full text-gray-900 border rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                fieldErrors.contrasenia ? "border-red-400" : "border-gray-300"
+              }`}
+              placeholder="Ingresa tu contraseña"
+              minLength={8}
+              maxLength={64}
+              required
+              disabled={loading}
+            />
+            {fieldErrors.contrasenia && (
+              <p className="text-red-500 text-xs mt-1">
+                {fieldErrors.contrasenia}
+              </p>
+            )}
+          </div>
         </div>
 
         {isRegister && (
-          <div className="mt-6 space-y-4 border-t border-gray-200 pt-6 text-sm">
+          <div className="space-y-4 pt-6 text-sm">
             {[
               {
                 label: "Confirmar contraseña",
@@ -216,14 +251,24 @@ const Login = () => {
                   key={key}
                   type={type}
                   value={form[key as keyof typeof form]}
-                  onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                  onChange={(e) => {
+                    setForm({ ...form, [key]: e.target.value });
+                    setFieldErrors((prev) => ({ ...prev, [key]: "" }));
+                  }}
                   placeholder={label}
                   required
                   minLength={minLength}
                   maxLength={maxLength}
                   disabled={loading}
-                  className="w-full text-gray-900 border border-gray-300 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className={`w-full text-gray-900 border rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
+                    fieldErrors[key] ? "border-red-400" : "border-gray-300"
+                  }`}
                 />
+                {fieldErrors[key] && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors[key]}
+                  </p>
+                )}
               </div>
             ))}
           </div>
