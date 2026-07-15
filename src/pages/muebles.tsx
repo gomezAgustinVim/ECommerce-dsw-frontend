@@ -27,17 +27,7 @@ export default function TodosLosMuebles() {
     try {
       const url =
         isAdmin && mostrarInactivos ? "/muebles?inactivos=true" : "/muebles";
-      console.log(
-        "url:",
-        url,
-        "isAdmin:",
-        isAdmin,
-        "mostrarInactivos:",
-        mostrarInactivos,
-      );
       const res = await api.get(url);
-      console.log("muebles recibidos:", res.data.data.length);
-      // console.log(res.data);
       const muebles = res.data.data;
       setTodosLosMuebles(muebles);
       setMueblesFiltrados(muebles);
