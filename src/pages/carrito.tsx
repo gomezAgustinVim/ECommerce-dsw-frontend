@@ -2,8 +2,13 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/axiosInstance";
 import { useCarrito } from "../context/carritoContext";
 import { formatCurrency } from "../utils/formatCurrency";
+import { useState, useEffect } from "react";
 
 export default function Carrito() {
+  const [stockDisponible, setStockDisponible] = useState<
+    Record<number, number>
+  >({});
+
   const { items, updateQty, removeItem, clearCart } = useCarrito();
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
@@ -12,10 +17,7 @@ export default function Carrito() {
   const navigate = useNavigate();
 
   const finalizarCompra = async () => {
-    if (items.length === 0) {
-      alert("El carrito está vacío");
-      return;
-    }
+    if (items.length === 0) return;
 
     const payload = {
       items: items.map((i) => ({
@@ -42,6 +44,21 @@ export default function Carrito() {
       }
     }
   };
+
+  useEffect(() => {
+    if (items.length === 0) return;
+    const fetchStock = async () => {
+      const stocks: Record<number, number> = {};
+      await Promise.all(
+        items.map(async (item) => {
+          const res = await api.get(`/muebles/${item.id}`);
+          stocks[item.id] = res.data.data.stock;
+        }),
+      );
+      setStockDisponible(stocks);
+    };
+    fetchStock();
+  }, [items.length]);
 
   return (
     <section className="max-w-4xl mx-auto bg-gray-50 p-4 rounded-2xl shadow-lg mt-10 sm:my-6 sm:p-6">
@@ -72,6 +89,13 @@ export default function Carrito() {
                 <p className="text-gray-500 text-sm">
                   {formatCurrency(item.price)}
                 </p>
+                {stockDisponible[item.id] !== undefined && (
+                  <p
+                    className={`text-sm ${item.quantity > stockDisponible[item.id] ? "text-red-500" : "text-gray-500"}`}
+                  >
+                    Stock disponible: {stockDisponible[item.id]}
+                  </p>
+                )}
               </div>
 
               <div
@@ -86,12 +110,24 @@ export default function Carrito() {
                     type="number"
                     value={item.quantity}
                     min={1}
-                    onChange={(e) => updateQty(item.id, Number(e.target.value))}
+                    max={stockDisponible[item.id] ?? item.quantity}
+                    onChange={(e) => {
+                      const max = stockDisponible[item.id] ?? Infinity;
+                      const val = Math.min(Number(e.target.value), max);
+                      updateQty(item.id, val);
+                    }}
                     className="w-16 text-center border
                                     rounded-md border-gray-300 text-gray-700
                                     focus:ring-2 focus:ring-indigo-500 text-sm"
                   />
                 </div>
+
+                {stockDisponible[item.id] !== undefined &&
+                  item.quantity > stockDisponible[item.id] && (
+                    <p className="text-red-500 text-xs">
+                      Stock disponible: {stockDisponible[item.id]}
+                    </p>
+                  )}
 
                 <div className="text-right font-bold text-gray-800 w-10 sm:w-auto">
                   {formatCurrency(item.price * item.quantity)}
