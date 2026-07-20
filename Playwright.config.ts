@@ -6,8 +6,11 @@ export default defineConfig({
   fullyParallel: true,
   use: {
     baseURL: "http://localhost:5173",
-    headless: true,
+    headless: false,
     screenshot: "only-on-failure",
+    launchOptions: {
+      slowMo: 1000
+    }
   },
   webServer: {
     command: "pnpm dev",
