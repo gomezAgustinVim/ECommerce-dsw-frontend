@@ -22,7 +22,9 @@ export default function MueblesDestacados() {
 
       console.log(res.data);
 
-      const todosLosMuebles = res.data.data.filter((m: Mueble) => m.activo !== false);
+      const todosLosMuebles = res.data.data.filter(
+        (m: Mueble) => m.activo !== false,
+      );
       const primerosTres = todosLosMuebles.slice(0, 3);
 
       setMueblesDestacados(primerosTres);
@@ -92,9 +94,6 @@ export default function MueblesDestacados() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                   <Link to={`/muebles/${mueble.id}`}>{mueble.descripcion}</Link>
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">
-                  {mueble.descripcion}
-                </p>
 
                 {/* Precio */}
                 <div className="mb-4">

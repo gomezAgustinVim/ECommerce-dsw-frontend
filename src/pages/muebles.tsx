@@ -172,10 +172,6 @@ export default function TodosLosMuebles() {
                 <Link to={`/muebles/${mueble.id}`}>{mueble.descripcion}</Link>
               </h3>
 
-              <p className="text-gray-600 mb-3 line-clamp-2 text-sm">
-                {mueble.descripcion}
-              </p>
-
               <div className="mb-3">
                 <span className="text-xl font-bold text-gray-900">
                   {formatCurrency(mueble.precioUnitario)}
