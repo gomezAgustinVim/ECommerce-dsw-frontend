@@ -13,12 +13,13 @@ test.describe("Flujo completo: login → buscar mueble", () => {
     await page.getByRole("button", { name: "Entrar" }).click();
 
     // espero que me mande al home antes de seguir
-    await page.waitForURL("/");
+    // await page.waitForURL("/");
+    await page.waitForURL("http://localhost:5173/");
   });
 
   // verifico el login y que el header muestre el perfil
   test("el usuario puede iniciar sesión correctamente", async ({ page }) => {
-    await expect(page).toHaveURL("/");
+    await expect(page).toHaveURL("http://localhost:5173/");
 
     // si aparece "perfil" en el header, la sesión está activa
     await expect(page.getByRole("link", { name: "Perfil" })).toBeVisible();
