@@ -27,7 +27,6 @@ export type Cliente = BaseType & {
 export type Categoria = BaseType & {
   nombre: string;
   descripcion: string;
-  imagen?: string;
 };
 
 export type Material = BaseType & {
