@@ -31,16 +31,16 @@ export default function Carrito() {
 
       clearCart();
 
-      alert("✅ Pedido creado con éxito");
+      alert("Pedido creado con éxito");
 
       navigate("/pedidos");
     } catch (err: any) {
-      console.error("❌ Error al crear pedido", err.config?.url);
+      console.error("Error al crear pedido", err.config?.url);
       if (err.response?.status === 401) {
         alert("Debes iniciar sesión para realizar una compra");
         navigate("/login");
       } else {
-        alert(err.response?.data?.message || "❌ Error al crear pedido");
+        alert(err.response?.data?.message || "Error al crear pedido");
       }
     }
   };

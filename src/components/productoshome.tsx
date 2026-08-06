@@ -20,8 +20,6 @@ export default function MueblesDestacados() {
     try {
       const res = await api.get("/muebles");
 
-      console.log(res.data);
-
       const todosLosMuebles = res.data.data.filter(
         (m: Mueble) => m.activo !== false,
       );
