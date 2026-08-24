@@ -108,7 +108,11 @@ export default function MisPedidos() {
   ) => {
     if (!isAdmin) return;
     const siguienteEstado =
-      estadoActual === "pendiente" ? "confirmado" : "enviado";
+      estadoActual === "pendiente"
+        ? "confirmado"
+        : estadoActual === "pagado"
+          ? "enviado"
+          : "entregado";
     try {
       setActualizandoEstadoId(pedidoId);
       await api.patch(`/pedidos/${pedidoId}/estado`, {
@@ -117,6 +121,7 @@ export default function MisPedidos() {
       await fetchPedidos();
     } catch (err: any) {
       alert("No se pudo actualizar el estado del pedido.");
+      console.error("No se pudo actualizar el estado del pedido.", err);
     } finally {
       setActualizandoEstadoId(null);
     }
@@ -286,7 +291,8 @@ export default function MisPedidos() {
 
                     {isAdmin &&
                       (ped.estado === "pendiente" ||
-                        ped.estado === "pagado") && (
+                        ped.estado === "pagado" ||
+                        ped.estado === "enviado") && (
                         <button
                           type="button"
                           onClick={() =>
@@ -299,7 +305,9 @@ export default function MisPedidos() {
                             ? "Actualizando..."
                             : ped.estado === "pendiente"
                               ? "Confirmar pedido"
-                              : "Marcar como enviado"}
+                              : ped.estado === "pagado"
+                                ? "Marcar como enviado"
+                                : "Marcar como entregado"}
                         </button>
                       )}
                   </div>
