@@ -54,7 +54,8 @@ export default function AdminCrear() {
   const [creatingMaterial, setCreatingMaterial] = useState(false);
   const [muebleForm, setMuebleForm] = useState<MuebleForm>(initialMuebleForm);
   const [materialForm, setMaterialForm] = useState(initialMaterialForm);
-  const [categoriaForm, setCategoriaForm] = useState<CategoriaForm>(initialCategoriaForm);
+  const [categoriaForm, setCategoriaForm] =
+    useState<CategoriaForm>(initialCategoriaForm);
   const [nuevaImagen, setNuevaImagen] = useState("");
 
   useEffect(() => {
@@ -92,7 +93,10 @@ export default function AdminCrear() {
       const imagenes = [...prev.imagenes];
       const newIndex = index + direction;
       if (newIndex < 0 || newIndex >= imagenes.length) return prev;
-      [imagenes[index], imagenes[newIndex]] = [imagenes[newIndex], imagenes[index]];
+      [imagenes[index], imagenes[newIndex]] = [
+        imagenes[newIndex],
+        imagenes[index],
+      ];
       return { ...prev, imagenes };
     });
   };
@@ -118,7 +122,10 @@ export default function AdminCrear() {
     setFeedback(null);
 
     if (!materialForm.nroMaterial.trim()) {
-      setFeedback({ type: "error", message: "El número de material es obligatorio." });
+      setFeedback({
+        type: "error",
+        message: "El número de material es obligatorio.",
+      });
       return;
     }
 
@@ -176,7 +183,10 @@ export default function AdminCrear() {
       return;
     }
 
-    if (categoriaForm.imagen.trim() && !/^https?:\/\//i.test(categoriaForm.imagen.trim())) {
+    if (
+      categoriaForm.imagen.trim() &&
+      !/^https?:\/\//i.test(categoriaForm.imagen.trim())
+    ) {
       setFeedback({
         type: "error",
         message: "La imagen debe ser una URL válida.",
@@ -204,7 +214,8 @@ export default function AdminCrear() {
       console.error("Error al crear categoría:", err);
       setFeedback({
         type: "error",
-        message: err.response?.data?.message || "No se pudo crear la categoría.",
+        message:
+          err.response?.data?.message || "No se pudo crear la categoría.",
       });
     } finally {
       setCreatingMaterial(false);
@@ -223,7 +234,10 @@ export default function AdminCrear() {
       return;
     }
 
-    if (muebleForm.etiqueta.trim().length < 2 || muebleForm.etiqueta.trim().length > 50) {
+    if (
+      muebleForm.etiqueta.trim().length < 2 ||
+      muebleForm.etiqueta.trim().length > 50
+    ) {
       setFeedback({
         type: "error",
         message: "La etiqueta debe tener entre 2 y 50 caracteres.",
@@ -235,17 +249,26 @@ export default function AdminCrear() {
     const precioUnitario = Number(muebleForm.precioUnitario);
 
     if (!Number.isInteger(stock) || stock < 0) {
-      setFeedback({ type: "error", message: "El stock debe ser un número entero y no negativo." });
+      setFeedback({
+        type: "error",
+        message: "El stock debe ser un número entero y no negativo.",
+      });
       return;
     }
 
     if (Number.isNaN(precioUnitario) || precioUnitario < 0) {
-      setFeedback({ type: "error", message: "El precio no puede ser negativo." });
+      setFeedback({
+        type: "error",
+        message: "El precio no puede ser negativo.",
+      });
       return;
     }
 
     if (muebleForm.imagenes.length === 0) {
-      setFeedback({ type: "error", message: "Debes agregar al menos una imagen." });
+      setFeedback({
+        type: "error",
+        message: "Debes agregar al menos una imagen.",
+      });
       return;
     }
 
@@ -323,7 +346,9 @@ export default function AdminCrear() {
             onSubmit={handleCreateMaterial}
             className="rounded-2xl bg-white p-6 shadow-md"
           >
-            <h2 className="text-xl font-semibold text-gray-800">Crear material</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Crear material
+            </h2>
             <div className="mt-4 space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -332,7 +357,10 @@ export default function AdminCrear() {
                 <input
                   value={materialForm.nroMaterial}
                   onChange={(e) =>
-                    setMaterialForm({ ...materialForm, nroMaterial: e.target.value })
+                    setMaterialForm({
+                      ...materialForm,
+                      nroMaterial: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   placeholder="Ej: MAT-001"
@@ -369,7 +397,9 @@ export default function AdminCrear() {
             onSubmit={handleCreateCategoria}
             className="rounded-2xl bg-white p-6 shadow-md"
           >
-            <h2 className="text-xl font-semibold text-gray-800">Crear categoría</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Crear categoría
+            </h2>
             <div className="mt-4 space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -378,7 +408,10 @@ export default function AdminCrear() {
                 <input
                   value={categoriaForm.nombre}
                   onChange={(e) =>
-                    setCategoriaForm({ ...categoriaForm, nombre: e.target.value })
+                    setCategoriaForm({
+                      ...categoriaForm,
+                      nombre: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   placeholder="Ej: Sala"
@@ -393,7 +426,10 @@ export default function AdminCrear() {
                 <textarea
                   value={categoriaForm.descripcion}
                   onChange={(e) =>
-                    setCategoriaForm({ ...categoriaForm, descripcion: e.target.value })
+                    setCategoriaForm({
+                      ...categoriaForm,
+                      descripcion: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   rows={3}
@@ -409,7 +445,10 @@ export default function AdminCrear() {
                 <input
                   value={categoriaForm.imagen}
                   onChange={(e) =>
-                    setCategoriaForm({ ...categoriaForm, imagen: e.target.value })
+                    setCategoriaForm({
+                      ...categoriaForm,
+                      imagen: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   placeholder="https://ejemplo.com/imagen.png"
@@ -429,7 +468,9 @@ export default function AdminCrear() {
             onSubmit={handleCreateMueble}
             className="rounded-2xl bg-white p-6 shadow-md"
           >
-            <h2 className="text-xl font-semibold text-gray-800">Crear mueble</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Crear mueble
+            </h2>
             <div className="mt-4 space-y-4">
               <div>
                 <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -438,7 +479,10 @@ export default function AdminCrear() {
                 <textarea
                   value={muebleForm.descripcion}
                   onChange={(e) =>
-                    setMuebleForm({ ...muebleForm, descripcion: e.target.value })
+                    setMuebleForm({
+                      ...muebleForm,
+                      descripcion: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   rows={3}
@@ -493,7 +537,10 @@ export default function AdminCrear() {
                   step="0.01"
                   value={muebleForm.precioUnitario}
                   onChange={(e) =>
-                    setMuebleForm({ ...muebleForm, precioUnitario: e.target.value })
+                    setMuebleForm({
+                      ...muebleForm,
+                      precioUnitario: e.target.value,
+                    })
                   }
                   className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                   required
@@ -508,7 +555,10 @@ export default function AdminCrear() {
                   <select
                     value={muebleForm.categoria}
                     onChange={(e) =>
-                      setMuebleForm({ ...muebleForm, categoria: e.target.value })
+                      setMuebleForm({
+                        ...muebleForm,
+                        categoria: e.target.value,
+                      })
                     }
                     className="w-full rounded-xl border border-gray-300 px-3 py-2 text-gray-900"
                     disabled={loadingCatalogos}
