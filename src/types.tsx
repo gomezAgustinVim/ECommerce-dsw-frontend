@@ -17,8 +17,7 @@ export type Cliente = BaseType & {
   dni: string;
   usuario: string;
   email: string;
-  contrasenia: string;
-  rol: "user" | "admin";
+  rol: "cliente" | "admin";
   fondos: number;
   pedidos: Pedido[];
   favoritos: Favorito[];
