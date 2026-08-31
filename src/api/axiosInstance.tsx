@@ -69,10 +69,6 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // const { data } = await api.post("/auth/refresh", {
-        //   refreshToken: localStorage.getItem("refresh_token"),
-        // });
-
         const { data } = await api.post("/auth/refresh");
         const newToken = data.token;
         localStorage.setItem("token", newToken);
@@ -96,5 +92,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-
-//sacase dr .env

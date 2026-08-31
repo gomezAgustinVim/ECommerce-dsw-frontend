@@ -65,8 +65,6 @@ const Login = () => {
           telefono,
           dni,
           usuario,
-          rol: "cliente",
-          fondos: 0,
         });
 
         alert("¡Registro exitoso!");
