@@ -8,12 +8,19 @@ export default function Carrito() {
   const [stockDisponible, setStockDisponible] = useState<
     Record<number, number>
   >({});
-
+  const [puntos, setPuntos] = useState(0);
+  const [descuentos, setDescuentos] = useState<any[]>([]);
   const { items, updateQty, removeItem, clearCart } = useCarrito();
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const shipping = subtotal > 0 ? 150 : 0;
-  const total = subtotal + shipping;
+  const mejorDescuento = descuentos
+    .filter((d) => d.puntosRequeridos <= puntos)
+    .sort((a, b) => b.porcentaje - a.porcentaje)[0];
+  const montoDescuento = mejorDescuento ? subtotal * (mejorDescuento.porcentaje / 100) : 0;
+  const total = subtotal - montoDescuento + shipping;  
+
+
   const navigate = useNavigate();
 
   const finalizarCompra = async () => {
@@ -62,6 +69,26 @@ export default function Carrito() {
     };
     fetchStock();
   }, [items.length]);
+
+  useEffect(() => { // trae los puntos del usuario y los descuentos disponibles
+  const token = localStorage.getItem("token");
+  if (!token) return; // si no esta logueado, no busca puntos
+
+  const fetchDescuentoInfo = async () => {
+    try {
+      const [perfilRes, descuentosRes] = await Promise.all([
+        api.get("/clientes/perfil"),
+        api.get("/descuentos"),
+      ]);
+      setPuntos(perfilRes.data.data.puntos);
+      setDescuentos(descuentosRes.data.data);
+    } catch (err) {
+      console.error("Error al cargar info de descuentos", err);
+    }
+  };
+
+  fetchDescuentoInfo();
+}, []);
 
   return (
     <section className="max-w-4xl mx-auto bg-gray-50 p-4 rounded-2xl shadow-lg mt-10 sm:my-6 sm:p-6">
@@ -155,6 +182,19 @@ export default function Carrito() {
             {formatCurrency(subtotal)}
           </span>
         </p>
+        {mejorDescuento && (
+          <p className="text-green-700 text-sm sm:text-base">
+            Descuento estimado ({mejorDescuento.porcentaje}%):{" "}
+            <span className="font-semibold">-{formatCurrency(montoDescuento)}</span>
+          </p>
+        )}
+
+        {mejorDescuento && (
+          <p className="text-xs text-gray-500">
+            * El descuento final se confirma al finalizar la compra
+          </p>
+        )}
+
         <p className="text-gray-700 text-sm sm:text-base">
           Envío:{" "}
           <span className="font-semibold text-gray-900">
