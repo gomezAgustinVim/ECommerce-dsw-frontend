@@ -126,6 +126,10 @@ export default function Perfil() {
               <span className="font-semibold">Dirección:</span>{" "}
               {cliente.direccion}
             </div>
+            <div>
+              <span className="font-semibold">Puntos acumulados:</span>{" "}
+              {cliente.puntos}
+            </div>
           </div>
         )}
 

@@ -21,6 +21,7 @@ export type Cliente = BaseType & {
   fondos: number;
   pedidos: Pedido[];
   favoritos: Favorito[];
+  puntos: number;
 };
 
 export type Categoria = BaseType & {
